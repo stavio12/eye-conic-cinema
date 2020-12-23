@@ -1,0 +1,217 @@
+body {
+  background: #000000 !important;
+  font-family: Open Sans, Arial, sans-serif;
+  color: white !important;
+}
+
+#logo {
+  width: 80px;
+}
+
+#slider-home {
+  height: 70vh !important;
+}
+
+.coming-soon {
+  height: auto;
+}
+
+#joke {
+  width: 30em;
+}
+
+/* Background designs  */
+
+#slider-home {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2413340336134454) 0%, rgba(0, 0, 0, 0.7931547619047619) 68%), url("./src/lights.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 100% auto !important;
+  width: 100vw !important;
+  height: 70vh !important;
+}
+
+#slider-2 {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2413340336134454) 0%, rgba(0, 0, 0, 0.7931547619047619) 68%), url("./src/drinks.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 100% auto !important;
+  width: 100vw !important;
+  height: 70vh !important;
+}
+
+#slider-3 {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2413340336134454) 0%, rgba(0, 0, 0, 0.7931547619047619) 68%), url("./src/tickets.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover auto !important;
+  width: 100vw !important;
+  height: 70vh !important;
+}
+
+#membership {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(185deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8547794117647058) 75%), url("./src/movie-pop.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
+  width: 100vw !important;
+  height: 70vh !important;
+}
+
+#refund {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(185deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8547794117647058) 75%), url("./src/pop-corn.jpg") !important;
+  height: 60vh !important;
+}
+
+#calender,
+#aboutus {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(185deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8547794117647058) 75%), url("./src/lights.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  width: 100vw !important;
+  height: 65vh !important;
+}
+#nowplaying {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(185deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8547794117647058) 75%), url("./src/movie-pop.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
+  width: 100vw !important;
+  height: 65vh !important;
+}
+
+#login-page {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(185deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8547794117647058) 75%), url("./src/lights.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  height: auto !important;
+}
+
+#nowplaying h1,
+#nowplaying h4 {
+  margin-top: 50px !important;
+}
+
+h1 {
+  font-size: 70px !important;
+}
+
+#packages .border {
+  height: 30em;
+}
+
+#packages-compare .border {
+  height: auto;
+}
+
+ul li {
+  list-style: none;
+}
+
+#packages-compare ul li {
+  padding: 5px;
+  margin-left: -50px;
+}
+
+#packages-compare ul li:before {
+  content: "⬛";
+  padding: 5px;
+}
+
+.check:before {
+  content: "✓" !important;
+  padding: 5px;
+}
+
+#check ul li:before {
+  content: "✓";
+  padding: 5px;
+}
+
+#viewers .border {
+  height: 20em;
+}
+
+#footer {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(185deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8099614845938375) 0%), url("./src/seat.jpg") !important;
+}
+
+#footer h2 span {
+  font-size: 50px;
+  font-weight: bolder;
+}
+
+.text-muted {
+  font-weight: bolder;
+}
+
+/* Buttons designs */
+
+#btn-red:hover {
+  background-color: #6e42ff !important;
+  border: #6e42ff !important;
+}
+
+#btn-blue {
+  background-color: #6e42ff !important;
+  border: #6e42ff !important;
+}
+
+#btn-blue:hover {
+  background-color: white !important;
+  color: #6e42ff !important;
+}
+
+/* boarder designs */
+
+.deep-blue {
+  color: #6e42ff !important;
+}
+
+.border {
+  border-width: 4px !important ;
+}
+
+.border-blue {
+  border-color: rgba(110, 66, 255, 0.3) !important;
+}
+#schedule h3 {
+  border-left: 4px solid #6e42ff !important;
+  padding-left: 20px;
+}
+
+.card-bg {
+  background: none;
+}
+
+/* AVartar */
+#avartar:hover {
+  width: 20em !important;
+  cursor: pointer;
+}
+
+#profile-avartar {
+  width: 2.5em;
+}
+
+#dashboardNav ul li {
+  padding-bottom: 3em;
+  color: white;
+  font-size: larger;
+  font-weight: bolder;
+}
+
+#dashboardNav {
+  background: rgb(45, 44, 44);
+  background: linear-gradient(180deg, rgba(45, 44, 44, 1) 0%, rgba(45, 44, 44, 1) 0%);
+  height: 100vh;
+}

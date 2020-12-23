@@ -1,0 +1,38 @@
+{
+  "name": "eyeconic-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "frontend": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run app.js\" \"npm run frontend\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kobla stavio",
+  "license": "ISC",
+  "devDependencies": {
+    "node-loader": "^1.0.2"
+  },
+  "dependencies": {
+    "async": "^3.2.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.3.0",
+    "connect-flash": "^0.1.1",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-mongo-sanitize": "^2.0.1",
+    "express-session": "^1.17.1",
+    "helmet": "^4.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.11.8",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.4.17",
+    "path": "^0.12.7",
+    "request": "^2.88.2",
+    "validator": "^13.5.2"
+  }
+}
