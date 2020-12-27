@@ -1,15 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Carousel, Image, Container, Row, Col, Button } from "react-bootstrap";
+import Axios from "axios";
 import { Link } from "react-router-dom";
 
-// Images
-import birds from "../../src/birds.jpg";
-import Venom from "../../src/venom.jpg";
+import Upcoming from "./Upcoming";
 import Joke from "../../src/joker.jpg";
-import Clean from "../../src/clean.jpg";
-import jolly from "../../src/jolly.jpg";
 
 function Homepage() {
+  const [upcoming, setUpcoming] = useState([]);
+
+  useEffect(() => {
+    try {
+      const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.MOVIEAPI}`).then(async (response) => {
+        const data = await response.data.results;
+        setUpcoming(data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    // console.log(movies);
+  }, []);
+
   return (
     <>
       <section id="carousel" className="pb-5">
@@ -168,37 +180,17 @@ function Homepage() {
                 Movies <span className="font-weight-bolder">Coming Soon</span>
               </h1>
               <Carousel className="coming-soon">
-                <Carousel.Item interval={1000}>
-                  <img className="d-block w-100" id="slider-home" src={birds} alt="First slide" />
-                  <Carousel.Caption>
-                    <h3>First slide label</h3>
-                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-
-                <Carousel.Item interval={2000}>
-                  <img className="d-block w-100" id="slider-home" src={Venom} alt="Third slide" />
-                  <Carousel.Caption>
-                    <h3>Second slide label</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-
-                <Carousel.Item interval={3000}>
-                  <img className="d-block w-100" id="slider-home" src={Clean} alt="Third slide" />
-                  <Carousel.Caption>
-                    <h3>Third slide label</h3>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-
-                <Carousel.Item interval={3000}>
-                  <img className="d-block w-100" id="slider-home" src={jolly} alt="Third slide" />
-                  <Carousel.Caption>
-                    <h3>Third slide label</h3>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
+                {upcoming.map((soon) => {
+                  return (
+                    <Carousel.Item interval={1000}>
+                      <img className="d-block mx-auto" id="slider-img" src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${soon.poster_path}`} alt="First slide" />
+                      <Carousel.Caption>
+                        <h3>{soon.title}</h3>
+                        <p>{soon.release_date}</p>
+                      </Carousel.Caption>
+                    </Carousel.Item>
+                  );
+                })}
               </Carousel>
             </Col>
           </Row>

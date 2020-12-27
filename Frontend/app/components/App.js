@@ -18,6 +18,7 @@ import Signup from "./UserAccount/Signup";
 import Avartar from "./UserAccount/Avartar";
 import UserHeader from "./UserAccount/UserHeader";
 import Dashboard from "./UserAccount/Dashboard";
+import Ticket from "./Orders/Ticket";
 
 //States
 // const [error, setError] = useState("");
@@ -118,6 +119,12 @@ const App = () => {
 
             <Route path="/:id/dashboard/" exact>
               <DocumentTitle title="Eyeconic || Welcome">{authUser(Dashboard)}</DocumentTitle>
+            </Route>
+
+            <Route path="/ticket" exact>
+              <DocumentTitle title="Eyeconic || Ticket">
+                <Ticket />
+              </DocumentTitle>
             </Route>
           </Switch>
           {/* <Calender /> */}

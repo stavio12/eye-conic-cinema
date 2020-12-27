@@ -8,7 +8,8 @@ body {
   width: 80px;
 }
 
-#slider-home {
+#slider-img {
+  width: 50em !important;
   height: 70vh !important;
 }
 

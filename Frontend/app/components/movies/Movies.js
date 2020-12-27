@@ -1,13 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Image, Row, Container, Col } from "react-bootstrap";
+import Axios from "axios";
 
-import birds from "../../src/birds.jpg";
-import Venom from "../../src/venom.jpg";
-import Joke from "../../src/joker.jpg";
-import Clean from "../../src/clean.jpg";
-import jolly from "../../src/jolly.jpg";
+import MovieInfos from "./MovieInfos";
 
 function Movies() {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    try {
+      const MovieFetch = Axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.MOVIEAPI}&primary_release_date.gte=2020-10-01&primary_release_date.lte=2021-10-22`).then(async (response) => {
+        const data = await response.data.results;
+        console.log(data);
+
+        setMovies(data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    // console.log(movies);
+  }, []);
+
   return (
     <>
       <section id="nowplaying">
@@ -27,91 +41,9 @@ function Movies() {
       <section id="nowplayingmovies" className="pt-5 pb-5 mt-5 mb-5">
         <Container>
           <Row>
-            <Col xs={12} md={6} lg={4} className="pb-5 mb-5">
-              <Image src={birds} thumbnail />
-              <br />
-              <h6>movie title</h6>
-              <p>
-                time <br />
-                Released date
-              </p>
-              <br />
-              <Button className="text-center" variant="outline-danger">
-                GET TICKETS
-              </Button>
-            </Col>
-
-            <Col xs={12} md={6} lg={4}>
-              <Image src={Joke} thumbnail />
-              <br />
-              <h6>movie title</h6>
-              <p>
-                time <br />
-                Released date
-              </p>
-              <br />
-              <Button className="text-center" variant="outline-danger">
-                GET TICKETS
-              </Button>
-            </Col>
-
-            <Col xs={12} md={6} lg={4}>
-              <Image src={birds} thumbnail />
-              <br />
-              <h6>movie title</h6>
-              <p>
-                time <br />
-                Released date
-              </p>
-              <br />
-              <Button className="text-center" variant="outline-danger">
-                GET TICKETS
-              </Button>
-            </Col>
-          </Row>
-
-          <Row className="pt-5 mt-5">
-            <Col xs={12} md={6} lg={4}>
-              <Image src={Clean} thumbnail />
-              <br />
-              <h6>movie title</h6>
-              <p>
-                time <br />
-                Released date
-              </p>
-              <br />
-              <Button className="text-center" variant="outline-danger">
-                GET TICKETS
-              </Button>
-            </Col>
-
-            <Col xs={12} md={6} lg={4}>
-              <Image src={jolly} thumbnail />
-              <br />
-              <h6>movie title</h6>
-              <p>
-                time <br />
-                Released date
-              </p>
-              <br />
-              <Button className="text-center" variant="outline-danger">
-                GET TICKETS
-              </Button>
-            </Col>
-
-            <Col xs={12} md={6} lg={4}>
-              <Image src={Clean} thumbnail />
-              <br />
-              <h6>movie title</h6>
-              <p>
-                time <br />
-                Released date
-              </p>
-              <br />
-              <Button className="text-center" variant="outline-danger">
-                GET TICKETS
-              </Button>
-            </Col>
+            {movies.map((movieData) => {
+              return <MovieInfos movieData={movieData} />;
+            })}
           </Row>
         </Container>
       </section>
