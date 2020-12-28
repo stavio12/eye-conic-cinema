@@ -7,6 +7,7 @@ import DispatchContext from "./DispatchContext";
 
 import Header from "./Header";
 import Promo from "./Promo";
+import Flashmsg from "./Flashmsg";
 import Footer from "./Footer";
 import Homepage from "./home/Homepage";
 import Movies from "./movies/Movies";
@@ -35,6 +36,7 @@ const App = () => {
       username: null,
       avatar: null,
     },
+    movieTitle: "",
   };
 
   const reducer = (state, action) => {
@@ -55,6 +57,10 @@ const App = () => {
           LoggedIn: false,
           user: null,
         };
+      case "movie":
+        return {
+          movieTitle: "action.payload",
+        };
     }
   };
 
@@ -68,12 +74,14 @@ const App = () => {
     document.title = "Eyeconic || EXPERINCE MOVIES";
   }, [DocumentTitle]);
 
+  console.log(state.movieTitle);
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
         <Router>
           {state.LoggedIn ? <UserHeader /> : <Header />}
-          {/* <UserHeader /> */}
+          {/* <Flashmsg messages={state.error} /> */}
+
           <Switch>
             <Route path="/" exact>
               <DocumentTitle title="Eyeconic || EXPERINCE MOVIES">
@@ -87,9 +95,9 @@ const App = () => {
               </DocumentTitle>
             </Route>
 
-            <Route path="/calender" exact>
+            <Route path="/movies/:id" exact>
               <DocumentTitle title="Eyeconic || Calender">
-                <Calender />
+                <Ticket />
               </DocumentTitle>
             </Route>
 
@@ -121,11 +129,11 @@ const App = () => {
               <DocumentTitle title="Eyeconic || Welcome">{authUser(Dashboard)}</DocumentTitle>
             </Route>
 
-            <Route path="/ticket" exact>
+            {/* <Route path="/ticket" exact>
               <DocumentTitle title="Eyeconic || Ticket">
                 <Ticket />
               </DocumentTitle>
-            </Route>
+            </Route> */}
           </Switch>
           {/* <Calender /> */}
           {/* <Dashboard /> */}

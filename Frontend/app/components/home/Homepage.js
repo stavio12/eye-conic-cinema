@@ -11,7 +11,7 @@ function Homepage() {
 
   useEffect(() => {
     try {
-      const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.MOVIEAPI}`).then(async (response) => {
+      const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=8f864e2ec8c367dffca6741f68c59409`).then(async (response) => {
         const data = await response.data.results;
         setUpcoming(data);
       });
@@ -180,9 +180,9 @@ function Homepage() {
                 Movies <span className="font-weight-bolder">Coming Soon</span>
               </h1>
               <Carousel className="coming-soon">
-                {upcoming.map((soon) => {
+                {upcoming.map((soon, id) => {
                   return (
-                    <Carousel.Item interval={1000}>
+                    <Carousel.Item key={id} interval={1000}>
                       <img className="d-block mx-auto" id="slider-img" src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${soon.poster_path}`} alt="First slide" />
                       <Carousel.Caption>
                         <h3>{soon.title}</h3>
