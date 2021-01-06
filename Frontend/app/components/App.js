@@ -11,6 +11,7 @@ import Flashmsg from "./Flashmsg";
 import Footer from "./Footer";
 import Homepage from "./home/Homepage";
 import Movies from "./movies/Movies";
+import MoviePage from "./movies/MoviePage";
 import Calender from "./Calendar/Calender";
 import Membership from "./membership/Membership";
 import About from "./about/About";
@@ -36,7 +37,7 @@ const App = () => {
       username: null,
       avatar: null,
     },
-    movieTitle: "",
+    movieID: "",
   };
 
   const reducer = (state, action) => {
@@ -59,7 +60,7 @@ const App = () => {
         };
       case "movie":
         return {
-          movieTitle: "action.payload",
+          movieID: action.payload,
         };
     }
   };
@@ -70,11 +71,14 @@ const App = () => {
     return state.LoggedIn ? <Component /> : <Redirect to="/login" />;
   };
 
-  useEffect(() => {
-    document.title = "Eyeconic || EXPERINCE MOVIES";
-  }, [DocumentTitle]);
+  useEffect(
+    () => {
+      document.title = "Eyeconic || EXPERINCE MOVIES";
+    },
+    [DocumentTitle],
+    [state.movieID]
+  );
 
-  console.log(state.movieTitle);
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
@@ -95,9 +99,9 @@ const App = () => {
               </DocumentTitle>
             </Route>
 
-            <Route path="/movies/:id" exact>
+            <Route path="/calender/" exact>
               <DocumentTitle title="Eyeconic || Calender">
-                <Ticket />
+                <Calender />
               </DocumentTitle>
             </Route>
 
@@ -129,11 +133,11 @@ const App = () => {
               <DocumentTitle title="Eyeconic || Welcome">{authUser(Dashboard)}</DocumentTitle>
             </Route>
 
-            {/* <Route path="/ticket" exact>
-              <DocumentTitle title="Eyeconic || Ticket">
-                <Ticket />
+            <Route path="/movies/:id" exact>
+              <DocumentTitle title={`Eyeconic || ${state.movieID}`}>
+                <MoviePage />
               </DocumentTitle>
-            </Route> */}
+            </Route>
           </Switch>
           {/* <Calender /> */}
           {/* <Dashboard /> */}

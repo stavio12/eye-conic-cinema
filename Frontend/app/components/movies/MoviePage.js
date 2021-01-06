@@ -1,0 +1,72 @@
+import React, { useEffect, useContext, useState } from "react";
+import Axios from "axios";
+import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
+import { Button, Image, Row, Container, Col, Spinner } from "react-bootstrap";
+
+function MoviePage() {
+  const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
+  const [movies, setMovies] = useState("");
+  const [Loading, setIsLoading] = useState();
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    try {
+      const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/${appState.movieID}?api_key=8f864e2ec8c367dffca6741f68c59409`).then(async (response) => {
+        const data = await response.data;
+        setIsLoading(false);
+        setMovies(data);
+      });
+    } catch (error) {
+      // setIsLoading(false);
+      console.log(error);
+    }
+  }, [Loading, movies]);
+
+  return (
+    <>
+      <Container>
+        {Loading ? (
+          <Row>
+            <Col>
+              <Image src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movies.poster_path}`} thumbnail />
+            </Col>
+            <Col>
+              <h1> {movies.title}</h1>
+              <br />
+              <p>{movies.overview}</p>
+              <br />
+              <h3>
+                Time <br />
+              </h3>
+              <h5 className="pb-5">
+                <small>
+                  Mon - Fri <br />
+                  10: 00 am | 12:30 pm | 4:40 pm | 7: 00 pm
+                </small>
+                <br />
+                <small className="pt-5">
+                  Sat - Sun <br />
+                  9: 00 am | 11:30 am| 1:40 pm | 3:30 pm | 9: 00 pm
+                </small>
+                <br />
+              </h5>
+              <Button className="text-center title " variant="outline-danger" block>
+                BUY TICKETS
+              </Button>
+            </Col>
+          </Row>
+        ) : (
+          <h3 className="text-center">
+            <Spinner animation="border" />
+            Loading Please Wait
+          </h3>
+        )}
+      </Container>
+    </>
+  );
+}
+
+export default MoviePage;
