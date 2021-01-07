@@ -37,7 +37,11 @@ const App = () => {
       username: null,
       avatar: null,
     },
-    movieID: "",
+    movie: {
+      title: "",
+      id: "",
+    },
+    Ticket: "",
   };
 
   const reducer = (state, action) => {
@@ -58,9 +62,15 @@ const App = () => {
           LoggedIn: false,
           user: null,
         };
-      case "movie":
+
+      case "MOVIE":
         return {
-          movieID: action.payload,
+          movie: action.payload,
+        };
+
+      case "TICKET":
+        return {
+          Ticket: action.payload,
         };
     }
   };
@@ -76,9 +86,10 @@ const App = () => {
       document.title = "Eyeconic || EXPERINCE MOVIES";
     },
     [DocumentTitle],
-    [state.movieID]
+    [state.movie]
   );
 
+  console.log("App", state.Ticket);
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
@@ -134,7 +145,7 @@ const App = () => {
             </Route>
 
             <Route path="/movies/:id" exact>
-              <DocumentTitle title={`Eyeconic || ${state.movieID}`}>
+              <DocumentTitle title={`Eyeconic || ${state.movie.title}`}>
                 <MoviePage />
               </DocumentTitle>
             </Route>

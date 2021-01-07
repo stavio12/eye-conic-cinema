@@ -1,27 +1,20 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { Button, Image, Row, Container, Col } from "react-bootstrap";
-import { Link, Redirect, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import DispatchContext from "../DispatchContext";
-import StateContext from "../StateContext";
 
 function MovieInfos(movieData) {
   const movie = movieData.movieData;
-  // const [movieID, setMovieTtile] = useState();
   const appDispatch = useContext(DispatchContext);
-  const appState = useContext(StateContext);
-
-  useEffect(() => {}, [appState.movieID]);
 
   const viewmovie = (e) => {
     if (e.target.classList.contains("title")) {
-      //print out movie title
-      const getTitle = e.target.parentElement;
-      const title = getTitle.querySelector("#title").textContent;
-
-      console.log(title);
-      //Push movie title into state
-      appDispatch({ type: "movie", payload: title });
+      //print out movie ID
+      const getID = e.target.parentElement;
+      const ID = getID.querySelector("#ID").textContent;
+      console.log(ID);
+      appDispatch({ type: "MOVIE", payload: { title: movie.title, id: ID } });
     }
   };
 
@@ -33,7 +26,7 @@ function MovieInfos(movieData) {
         <h6 className="pt-5" data-title={movie.title}>
           Title:
           <span className="font-weight-bolder">{movie.title}</span>
-          <span className="d-none" id="title">
+          <span className="d-none" id="ID">
             {movie.id}
           </span>
         </h6>
@@ -42,8 +35,9 @@ function MovieInfos(movieData) {
           <small>Votes: {movie.vote_count}</small>
         </p>
         <br />
+
         {/* //Push movie title into link */}
-        <Button as={Link} to={`/movies/${appState.movieID}`} className="text-center title" onClick={viewmovie} variant="outline-danger">
+        <Button className="text-center title" as={Link} to={`/movies/${movie.id}`} onClick={viewmovie} variant="outline-danger">
           GET TICKETS
         </Button>
       </Col>

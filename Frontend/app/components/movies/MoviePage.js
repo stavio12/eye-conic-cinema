@@ -3,18 +3,21 @@ import Axios from "axios";
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
 import { Button, Image, Row, Container, Col, Spinner } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 
 function MoviePage() {
   const appDispatch = useContext(DispatchContext);
   const appState = useContext(StateContext);
   const [movies, setMovies] = useState("");
   const [Loading, setIsLoading] = useState();
+  let { id } = useParams();
 
   useEffect(() => {
     setIsLoading(true);
 
     try {
-      const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/${appState.movieID}?api_key=8f864e2ec8c367dffca6741f68c59409`).then(async (response) => {
+      //search for movie using Id saved in state or params(in case there is refreshing)
+      const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/${appState.movie.id || id}?api_key=8f864e2ec8c367dffca6741f68c59409`).then(async (response) => {
         const data = await response.data;
         setIsLoading(false);
         setMovies(data);
@@ -23,7 +26,13 @@ function MoviePage() {
       // setIsLoading(false);
       console.log(error);
     }
-  }, [Loading, movies]);
+  }, [Loading, movies, id]);
+
+  const buyTicket = () => {
+    if (movies) {
+      appDispatch({ type: "TICKET", payload: movies.title });
+    }
+  };
 
   return (
     <>
@@ -44,16 +53,16 @@ function MoviePage() {
               <h5 className="pb-5">
                 <small>
                   Mon - Fri <br />
-                  10: 00 am | 12:30 pm | 4:40 pm | 7: 00 pm
+                  10:00 am | 12:30 pm | 4:40 pm | 7:00 pm
                 </small>
                 <br />
                 <small className="pt-5">
                   Sat - Sun <br />
-                  9: 00 am | 11:30 am| 1:40 pm | 3:30 pm | 9: 00 pm
+                  9:00 am | 11:30 am| 1:40 pm | 3:30 pm | 9:00 pm
                 </small>
                 <br />
               </h5>
-              <Button className="text-center title " variant="outline-danger" block>
+              <Button className="text-center title" onClick={buyTicket} variant="outline-danger" block>
                 BUY TICKETS
               </Button>
             </Col>
