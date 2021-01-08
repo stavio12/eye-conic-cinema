@@ -1,5 +1,6 @@
 const { promisify } = require("util");
 const async = require("async");
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userdb");
 
@@ -10,8 +11,18 @@ const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 };
 
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+
+  res.status(statusCode).json({
+    status: "success",
+    token,
+    user,
+  });
+};
+
 //Protect routes and authenticate users
-exports.authenUser = async (req, res, next) => {
+exports.bodyGuard = async (req, res, next) => {
   // Getting token and check if it exists
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
@@ -98,18 +109,12 @@ exports.login = async (req, res, next) => {
   }
 
   // If everything is okay send token to client
-  const token = signToken(user._id);
-
-  res.status(200).json({
-    status: "success",
-    token,
-    user,
-  });
+  createSendToken(user, 200, res);
 
   console.log("login Successful!");
 };
 
-exports.forgotPassword = async (req, res, nex) => {
+exports.forgotPassword = async (req, res, next) => {
   if (!req.body.email) {
     return res.send({ status: 404, data: "Please Provide an email!" });
   }
@@ -151,7 +156,48 @@ exports.forgotPassword = async (req, res, nex) => {
   }
 };
 
-exports.resetPassword = (req, res, nex) => {};
+exports.resetPassword = async (req, res, next) => {
+  // Get user based on the token
+  const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+
+  const user = await User.findOne({ resetPasswordToken: hashedToken, resetPasswordExpires: { $gt: Date.now() } });
+
+  //check if token has expired
+  if (!user) {
+    return res.send({ status: 400, data: "Token is invalid or has expired" });
+  }
+  //update password
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  await user.save();
+
+  //Update password
+
+  //log user in
+  createSendToken(user, 200, res);
+
+  console.log("Reset Successful!");
+};
+
+exports.updatePassword = async (req, res, next) => {
+  //Get user from dbs
+  const user = await User.findById(req.user.id).select("+password");
+
+  //Check if inserted password is correct
+  if (!(await user.correctPassword(req.body.oldPassword, user.password))) {
+    return res.send({ status: 401, data: "Your current password is incorrect" });
+  }
+
+  //Update password if correct
+  user.password = req.body.password;
+  await user.save();
+
+  //Log user in finally
+  createSendToken(user, 200, res);
+
+  console.log("Password Updated Successfully!");
+};
 
 // router.get("/logout", authenUser, (req, res) => {
 //   console.log("Hello");

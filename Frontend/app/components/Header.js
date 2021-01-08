@@ -7,11 +7,11 @@ import logo from "../src/logo.png";
 function Header() {
   return (
     <>
-      <Navbar collapseOnSelect expand="lg">
+      <Navbar collapseOnSelect expand="lg" variant="dark">
         <Navbar.Brand as={Link} to="/" className="d-none d-sm-block">
           <Image id="logo" src={logo} />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Toggle aria-controls="responsive-navbar-nav " />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto text-center">
             <Nav.Link as={Link} className="text-white" to="/">

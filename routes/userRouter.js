@@ -11,8 +11,11 @@ router.post("/signup", authCon.signup);
 router.post("/login", authCon.login);
 
 router.post("/forgotPassword", authCon.forgotPassword);
-router.post("/resetPassword", authCon.resetPassword);
+router.patch("/resetPassword/:token", authCon.resetPassword);
 
-router.route("/trumutu").get(authCon.authenUser, userCon.getUser);
+router.patch("/updateMyPassword", authCon.bodyGuard, authCon.updatePassword);
+router.patch("/updateMe", authCon.bodyGuard, userCon.updateMe);
+
+router.route("/trumutu").get(authCon.bodyGuard, userCon.getUser);
 
 module.exports = router;
