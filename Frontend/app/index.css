@@ -21,6 +21,11 @@ body {
   width: 30em;
 }
 
+#caption {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2413340336134454) 0%, rgba(0, 0, 0, 0.7931547619047619) 68%) !important;
+}
+
 /* Background designs  */
 
 #slider-home {

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 let userSchema = new mongoose.Schema({
   username: String,
@@ -27,6 +28,7 @@ userSchema.methods.correctPassword = async function (candidatePassword, userPass
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
+//If password is changed after a certain time range dont ggive access to user
 userSchema.methods.changedPasswordAfter = function (JWTTimesstamp) {
   if (this.PasswordchangedAt) {
     const changedTimestamp = parseInt(this.PasswordchangedAt.getTime() / 1000, 10);
@@ -37,6 +39,18 @@ userSchema.methods.changedPasswordAfter = function (JWTTimesstamp) {
   }
 
   return false;
+};
+
+//reset token for users
+userSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+
+  this.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
+
+  console.log({ resetToken }, this.resetPasswordToken);
+  return resetToken;
 };
 
 module.exports = mongoose.model("user", userSchema);

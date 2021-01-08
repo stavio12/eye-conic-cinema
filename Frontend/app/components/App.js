@@ -14,6 +14,7 @@ import Movies from "./movies/Movies";
 import MoviePage from "./movies/MoviePage";
 import Calender from "./Calendar/Calender";
 import Membership from "./membership/Membership";
+import MembershipSignup from "./membership/MembershipSignup";
 import About from "./about/About";
 import Login from "./UserAccount/Login";
 import Signup from "./UserAccount/Signup";
@@ -147,6 +148,12 @@ const App = () => {
             <Route path="/movies/:id" exact>
               <DocumentTitle title={`Eyeconic || ${state.movie.title}`}>
                 <MoviePage />
+              </DocumentTitle>
+            </Route>
+
+            <Route path="/membership/:id/signup" exact>
+              <DocumentTitle title={`Eyeconic || Membership`}>
+                <MembershipSignup />
               </DocumentTitle>
             </Route>
           </Switch>

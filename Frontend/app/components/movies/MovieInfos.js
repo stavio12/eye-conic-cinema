@@ -13,7 +13,6 @@ function MovieInfos(movieData) {
       //print out movie ID
       const getID = e.target.parentElement;
       const ID = getID.querySelector("#ID").textContent;
-      console.log(ID);
       appDispatch({ type: "MOVIE", payload: { title: movie.title, id: ID } });
     }
   };
@@ -36,9 +35,9 @@ function MovieInfos(movieData) {
         </p>
         <br />
 
-        {/* //Push movie title into link */}
-        <Button className="text-center title" as={Link} to={`/movies/${movie.id}`} onClick={viewmovie} variant="outline-danger">
-          GET TICKETS
+        {/* //Push movie id into link */}
+        <Button className="text-center title" onClick={viewmovie} variant="outline-danger">
+          <Link to={`/movies/${movie.id}`}>GET TICKETS</Link>
         </Button>
       </Col>
     </>

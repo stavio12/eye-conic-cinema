@@ -13,18 +13,13 @@ function Movies() {
   const appDispatch = useContext(DispatchContext);
 
   useEffect(() => {
-    try {
-      setIsLoading(true);
+    setIsLoading(true);
 
-      const MovieFetch = Axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=8f864e2ec8c367dffca6741f68c59409&primary_release_date.gte=2020-10-01&primary_release_date.lte=2021-10-22`).then(async (response) => {
-        const data = await response.data.results;
-        setIsLoading(false);
-        setMovies(data);
-      });
-    } catch (error) {
-      setIsLoading(true);
-      console.log(error);
-    }
+    const MovieFetch = Axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=8f864e2ec8c367dffca6741f68c59409&primary_release_date.gte=2020-10-01&primary_release_date.lte=2021-10-22`).then(async (response) => {
+      const data = await response.data.results;
+      setIsLoading(false);
+      setMovies(data);
+    });
   }, [Loading]);
 
   return (

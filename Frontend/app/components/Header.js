@@ -20,9 +20,9 @@ function Header() {
             <Nav.Link as={Link} className="text-white" to="/movies">
               Movies
             </Nav.Link>
-            <Nav.Link as={Link} className="text-white" to="/calender">
+            {/* <Nav.Link as={Link} className="text-white" to="/calender">
               Calender
-            </Nav.Link>
+            </Nav.Link> */}
             <Nav.Link as={Link} className="text-white" to="/membership">
               Membership
             </Nav.Link>

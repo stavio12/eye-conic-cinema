@@ -10,16 +10,10 @@ function Homepage() {
   const [upcoming, setUpcoming] = useState([]);
 
   useEffect(() => {
-    try {
-      const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=8f864e2ec8c367dffca6741f68c59409`).then(async (response) => {
-        const data = await response.data.results;
-        setUpcoming(data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-
-    // console.log(movies);
+    const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=8f864e2ec8c367dffca6741f68c59409`).then(async (response) => {
+      const data = await response.data.results;
+      setUpcoming(data);
+    });
   }, []);
 
   return (
@@ -33,7 +27,7 @@ function Homepage() {
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 <Button id="btn-red" variant="danger" size="lg">
                   <Link className="text-white" to="/movies">
-                    <i class="fa fa-film" aria-hidden="true"></i> VIEW SHOWTIMES
+                    <i className="fa fa-film" aria-hidden="true"></i> VIEW SHOWTIMES
                   </Link>{" "}
                 </Button>
               </div>
@@ -46,7 +40,7 @@ function Homepage() {
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 <Button id="btn-red" variant="danger" size="lg">
                   <Link className="text-white" to="/snacks">
-                    <i class="fa fa-film" aria-hidden="true"></i> MENU
+                    <i className="fa fa-film" aria-hidden="true"></i> MENU
                   </Link>{" "}
                 </Button>
               </div>
@@ -59,7 +53,7 @@ function Homepage() {
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                 <Button id="btn-red" variant="danger" size="lg">
                   <Link className="text-white" to="/membership">
-                    <i class="fa fa-film" aria-hidden="true"></i> JOIN TODAY
+                    <i className="fa fa-film" aria-hidden="true"></i> JOIN TODAY
                   </Link>{" "}
                 </Button>
               </div>
@@ -73,7 +67,7 @@ function Homepage() {
           <Row>
             <Col xs={12} sm={12} md={4} className="pb-5">
               <Button variant="outline-danger" size="lg">
-                <Link className="text-white" to="/tickets">
+                <Link className="text-white" to="/movies">
                   BUY TICKETS
                 </Link>{" "}
               </Button>
@@ -81,7 +75,7 @@ function Homepage() {
 
             <Col xs={12} sm={12} md={4} className="pb-5">
               <Button variant="outline-danger" size="lg">
-                <Link className="text-white" to="/movies">
+                <Link className="text-white" to="/showtime">
                   VIEW SHOWTIMES
                 </Link>{" "}
               </Button>
@@ -99,7 +93,7 @@ function Homepage() {
       </section>
 
       <section className="aboutus mx-auto text-left  pt-5 mt-5">
-        <Container fluid>
+        <Container fluid="true">
           <Row>
             <Col xs={12} sm={4} className="text-center">
               <h4 className="deep-blue">ABOUT US</h4> <br />
@@ -149,11 +143,11 @@ function Homepage() {
       <section id="playing" className="pt-5 pb-5 mt-5 mb-5 text-center">
         <Container>
           <Row>
-            <Col xs={12} md={12} lg={6} fluid>
+            <Col xs={12} md={12} lg={6} fluid="true">
               <Image id="joke" src={Joke} />
             </Col>
 
-            <Col xs={12} md={12} lg={6} fluid className="pt-5 mt-5">
+            <Col xs={12} md={12} lg={6} fluid="true" className="pt-5 mt-5">
               <h5 className="text-danger">PLAYING</h5>
               <br />
               <h1>
@@ -163,7 +157,7 @@ function Homepage() {
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
               <Button id="btn-red" variant="danger" size="lg">
                 <Link className="text-white" to="/movies">
-                  <i class="fa fa-film" aria-hidden="true"></i> VIEW ALL
+                  <i className="fa fa-film" aria-hidden="true"></i> VIEW ALL
                 </Link>
               </Button>
             </Col>
@@ -184,7 +178,7 @@ function Homepage() {
                   return (
                     <Carousel.Item key={id} interval={1000}>
                       <img className="d-block mx-auto" id="slider-img" src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${soon.poster_path}`} alt="First slide" />
-                      <Carousel.Caption>
+                      <Carousel.Caption id="caption">
                         <h3>{soon.title}</h3>
                         <p>{soon.release_date}</p>
                       </Carousel.Caption>

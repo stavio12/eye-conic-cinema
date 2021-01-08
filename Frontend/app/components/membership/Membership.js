@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, Container, Col, Row, Card } from "react-bootstrap";
 import { Link, Redirect } from "react-router-dom";
 
@@ -17,9 +17,9 @@ function Membership() {
           </h1>
 
           <Button id="btn-red" variant="danger" size="lg">
-            <Link className="text-white pb-5" to="/signup">
-              <i class="fa fa-user" aria-hidden="true"></i> JOIN TODAY
-            </Link>
+            <span className="text-white pb-5">
+              <i className="fa fa-user" aria-hidden="true"></i> JOIN TODAY
+            </span>
           </Button>
         </div>
       </section>
@@ -27,45 +27,48 @@ function Membership() {
       <section id="packages">
         <Container className="pt-5 mt-5">
           <Row className="text-center ">
-            <Col fluid xs={{ span: 12 }} sm={{ span: 10, offset: 2 }} md={{ span: 8, offset: 2 }} lg={{ span: 4, offset: 0 }} className="pb-5 mb-5">
+            <Col fluid="true" xs={{ span: 12 }} sm={{ span: 10, offset: 2 }} md={{ span: 8, offset: 2 }} lg={{ span: 4, offset: 0 }} className="pb-5 mb-5">
               <Card style={{ width: "18rem" }} className="border card-bg mx-5 p-4 border-secondary text-left">
                 <Card.Body>
                   <Card.Title>
-                    {" "}
                     <h3 className="pt-3">Movie Go’er</h3>
                   </Card.Title>
                   <Card.Text>
-                    <p>Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p> <br />
+                    Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. <br />
                   </Card.Text>
-                  <Button variant="outline-secondary">JOIN TODAY</Button>
+                  <Button as={Link} to="/membership/movie-go/signup" variant="outline-dark">
+                    JOIN TODAY
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>
-            <Col fluid xs={{ span: 12 }} sm={{ span: 10, offset: 2 }} md={{ span: 8, offset: 2 }} lg={{ span: 4, offset: 0 }} className="pb-5 mb-5">
+            <Col fluid="true" xs={{ span: 12 }} sm={{ span: 10, offset: 2 }} md={{ span: 8, offset: 2 }} lg={{ span: 4, offset: 0 }} className="pb-5 mb-5">
               <Card style={{ width: "18rem" }} className="border card-bg mx-5 p-4 border-blue text-left">
                 <Card.Body>
                   <Card.Title>
-                    {" "}
                     <h3 className="pt-3">Family Pass</h3>
                   </Card.Title>
                   <Card.Text>
-                    <p>Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p> <br />
+                    Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. <br />
                   </Card.Text>
-                  <Button variant="outline-primary">JOIN TODAY</Button>
+                  <Button as={Link} to="/membership/movie-family-pass/signup" variant="outline-primary">
+                    JOIN TODAY
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>
-            <Col fluid xs={{ span: 12 }} sm={{ span: 10, offset: 2 }} md={{ span: 8, offset: 2 }} lg={{ span: 4, offset: 0 }} className="pb-5 mb-5">
+            <Col fluid="true" xs={{ span: 12 }} sm={{ span: 10, offset: 2 }} md={{ span: 8, offset: 2 }} lg={{ span: 4, offset: 0 }} className="pb-5 mb-5">
               <Card style={{ width: "18rem" }} className="border card-bg mx-5 p-4 border-danger text-left">
                 <Card.Body>
                   <Card.Title>
-                    {" "}
                     <h3 className="pt-3">Movie Lover</h3>
                   </Card.Title>
                   <Card.Text>
-                    <p>Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p> <br />
+                    Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Donec rutrum congue leo eget malesuada. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. <br />
                   </Card.Text>
-                  <Button variant="outline-danger">JOIN TODAY</Button>
+                  <Button as={Link} to="/membership/movie-lover/signup" variant="outline-danger">
+                    JOIN TODAY
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -93,7 +96,9 @@ function Membership() {
                   <li className="text-muted">Omnis Iste Natus</li>
                   <li className="text-muted">Quae Ab Illo</li>
                 </ul>
-                <Button variant="outline-dark">JOIN TODAY</Button>
+                <Button as={Link} to="/membership/movie-go/signup" variant="outline-dark">
+                  JOIN TODAY
+                </Button>
               </Col>
 
               <Col xs={12} sm={12} md={{ span: 6 }} lg={{ span: 3 }} className="mx-auto pb-5 mb-5">
@@ -107,7 +112,9 @@ function Membership() {
                   <li className="text-muted">Omnis Iste Natus</li>
                   <li className="check">Quae Ab Illo</li>
                 </ul>
-                <Button variant="outline-primary">JOIN TODAY</Button>
+                <Button as={Link} to="/membership/movie-family-pass/signup" variant="outline-primary">
+                  JOIN TODAY
+                </Button>
               </Col>
 
               <Col id="check" xs={12} sm={12} md={{ span: 6 }} lg={{ span: 3 }} className="mx-auto pb-5 mb-5">
@@ -121,7 +128,9 @@ function Membership() {
                   <li>Omnis Iste Natus</li>
                   <li>Quae Ab Illo</li>
                 </ul>
-                <Button variant="outline-danger">JOIN TODAY</Button>
+                <Button as={Link} to="/membership/movie-lover/signup" variant="outline-danger">
+                  JOIN TODAY
+                </Button>
               </Col>
 
               <Col xs={12} sm={12} md={{ span: 6 }} lg={{ span: 3 }} className="mx-auto pb-5 mb-5">

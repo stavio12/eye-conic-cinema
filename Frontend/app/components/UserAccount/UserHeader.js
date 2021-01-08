@@ -25,12 +25,12 @@ function UserHeader() {
             <Nav.Link className="text-white" as={Link} to="/movies">
               Movies
             </Nav.Link>
-            <Nav.Link className="text-white" as={Link} to="/calender">
+            {/* <Nav.Link className="text-white" as={Link} to="/calender">
               Calender
-            </Nav.Link>
-            <Nav.Link className="text-white" as={Link} to="/membership">
+            </Nav.Link> */}
+            {/* <Nav.Link className="text-white" as={Link} to="/membership">
               Membership
-            </Nav.Link>
+            </Nav.Link> */}
             {/* <Nav.Link className="text-white" as={Link} to="/contact">
             Contact
           </Nav.Link> */}

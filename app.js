@@ -16,7 +16,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //Routes
-const routes = require("./routes/routes");
+const userRouter = require("./routes/userRouter");
+// const guestRouter = require("./routes/guestRouter");
 
 // requiring user models
 
@@ -56,7 +57,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(routes);
+// app.use(guestRouter);
+app.use(userRouter);
 
 const port = process.env.PORT;
 app.listen(port, () => {
