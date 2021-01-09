@@ -22,7 +22,7 @@ function Dashboard() {
             <DashboardNav />
           </Col>
           <Col xs={12} md={10}>
-            <h2>Hello, Gustave</h2>
+            <h2>Hello, {appState.user.username}</h2>
             <div id="dashboard">
               <Container>
                 <Route path={`/:${appState.user._id}/dashboard/`} exact>

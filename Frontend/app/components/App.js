@@ -21,7 +21,8 @@ import Signup from "./UserAccount/Signup";
 import Avartar from "./UserAccount/Avartar";
 import UserHeader from "./UserAccount/UserHeader";
 import Dashboard from "./UserAccount/Dashboard";
-import Ticket from "./Orders/Ticket";
+import ForgotPassword from "./UserAccount/ForgotPassword";
+import ResetPassword from "./UserAccount/ResetPassword";
 
 //States
 // const [error, setError] = useState("");
@@ -36,7 +37,7 @@ const App = () => {
     user: {
       _id: null,
       username: null,
-      avatar: null,
+      token: null,
     },
     movie: {
       title: "",
@@ -50,12 +51,10 @@ const App = () => {
       case "LOGIN":
         return {
           LoggedIn: true,
-          loading: Boolean(),
           user: action.payload,
         };
       case "ERROR":
         return {
-          loading: Boolean(),
           error: action.payload,
         };
       case "LOGOUT":
@@ -78,7 +77,7 @@ const App = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const authUser = (Component) => {
+  const bodyGuard = (Component) => {
     return state.LoggedIn ? <Component /> : <Redirect to="/login" />;
   };
 
@@ -90,7 +89,6 @@ const App = () => {
     [state.movie]
   );
 
-  console.log("App", state.Ticket);
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
@@ -142,18 +140,30 @@ const App = () => {
             </Route>
 
             <Route path="/:id/dashboard/" exact>
-              <DocumentTitle title="Eyeconic || Welcome">{authUser(Dashboard)}</DocumentTitle>
+              <DocumentTitle title="Eyeconic || Welcome">{bodyGuard(Dashboard)}</DocumentTitle>
             </Route>
 
-            <Route path="/movies/:id" exact>
+            {/* <Route path="/movies/:id" exact>
               <DocumentTitle title={`Eyeconic || ${state.movie.title}`}>
                 <MoviePage />
               </DocumentTitle>
-            </Route>
+            </Route> */}
 
             <Route path="/membership/:id/signup" exact>
               <DocumentTitle title={`Eyeconic || Membership`}>
                 <MembershipSignup />
+              </DocumentTitle>
+            </Route>
+
+            <Route path="/forgotPassword" exact>
+              <DocumentTitle title={`Eyeconic || Forgot Password`}>
+                <ForgotPassword />
+              </DocumentTitle>
+            </Route>
+
+            <Route path="/resetPassword/:token" exact>
+              <DocumentTitle title={`Eyeconic || Reset Password`}>
+                <ResetPassword />
               </DocumentTitle>
             </Route>
           </Switch>

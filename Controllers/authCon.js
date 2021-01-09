@@ -14,6 +14,18 @@ const signToken = (id) => {
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
+  const cookieOptions = {
+    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 1000),
+    httpOnly: true,
+  };
+
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+
+  res.cookie("jwt", token, cookieOptions);
+
+  //Remove password from res
+  user.password = undefined;
+
   res.status(statusCode).json({
     status: "success",
     token,
@@ -67,7 +79,7 @@ exports.signup = async (req, res, next) => {
 
   //send email to user after siginin up
 
-  const message = `<p> Hi  <b> ${newUser.username} </b>, Welcome to Eyeconic Cinema! </p>`;
+  const message = `<p> Hi  <b> ${newUser.username} </b>, Welcome to Eyeconic Cinema! <br> <b>Enjoy your world of ${newUser.membershipType} access!</b> </p> `;
 
   try {
     await sendEmail({
@@ -76,14 +88,16 @@ exports.signup = async (req, res, next) => {
       message: message,
     });
 
-    res.status(201).json({
-      status: "success",
-      token,
-      data: {
-        user: newUser,
-        message: "Email sent to user",
-      },
-    });
+    createSendToken(newUser, 201, res);
+
+    // res.status(201).json({
+    //   status: "success",
+    //   token,
+    //   data: {
+    //     user: newUser,
+    //     message: "Email sent to user",
+    //   },
+    // });
   } catch (error) {
     console.log(error);
 
@@ -132,7 +146,7 @@ exports.forgotPassword = async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   //send token to user's email
-  const resetUrl = `http://localhost:4000/resetPassword/${resetToken}`;
+  const resetUrl = `http://localhost:3000/resetPassword/${resetToken}`;
 
   const message = `<p> Hi  <b> ${user.username} </b>, You requested for a password reset. Click on the link below <br> <br> <a href="${resetUrl}"> <b> Click here to Reset your password </b> </a> </p>`;
 

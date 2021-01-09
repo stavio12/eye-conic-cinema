@@ -13,8 +13,8 @@ function Login() {
   const [loading, setIsLoading] = useState();
   // const {id} = useParams();
 
-  const appDispatch = useContext(DispatchContext); // For accessing  Login function
-  const appState = useContext(StateContext); // For accessing  Login function
+  const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
   useEffect(() => {}, [loading]);
 
   const login = async (e) => {
@@ -34,43 +34,43 @@ function Login() {
         },
       }).then(async (response) => {
         //If sending details to server turn on spinners and disable forms to readonly
-        //Login user and send data into setUser
-        if (response.statusText === "OK") {
-          setIsLoading(false);
-          const data = await response.data.data;
-          console.log(data._id);
-          console.log(data);
-          //Store user data into state
-          appDispatch({ type: "LOGIN", payload: data, LoggedIn: true });
 
-          //If authenticate from the server redirect user to select avartar for profile
-          // window.location = `/avartar/:${data._id}`;
+        setIsLoading(false);
+
+        //Validate user details
+        console.log(response);
+
+        if (response.data.status != 200) {
+          //Logout Error Message
+          appDispatch({ type: "ERROR", payload: response.data.data });
+          // //Clear up form after submitting
+          document.getElementById("form").reset();
         }
+        //Login user and send data into state
+        const userData = await response.data;
+
+        //Store user data into state
+        appDispatch({ type: "LOGIN", payload: { _id: userData.user._id, username: userData.user.username, token: userData.token }, LoggedIn: true });
       });
       console.log("In here");
-
-      //Clear up form after submitting
-      document.getElementById("form").reset();
     } catch (err) {
-      console.log(err.toString());
       setIsLoading(false);
-
       if (err.toString() === "Error: Network Error") {
-        //Log out any other erorr here
-        appDispatch({ type: "ERROR", payload: err.toString() });
-      } else if (err.response.status === 401) {
-        //If user's details are incorrect  log out error
-        appDispatch({ type: "ERROR", payload: "Email or Password is incorrect!" });
-      } else {
+        //Log network erorr here
+
         appDispatch({ type: "ERROR", payload: err.toString() });
       }
+
+      //Log out any other erorr here
+
+      // appDispatch({ type: "ERROR", payload: err.toString() });
     }
   };
 
   return (
     <>
       {appState.LoggedIn ? (
-        <Redirect to={`/:${appState.user._id}/dashboard/`} />
+        <Redirect to={`/${appState.user._id}/dashboard/`} />
       ) : (
         <section id="login-page">
           <Container>
@@ -127,12 +127,12 @@ function Login() {
                   )}
                   <p>or</p>
                   <Button variant="success" size="lg" type="submit">
-                    <Link className="text-white pb-5" to="/signup">
+                    <Link className="text-white pb-5" to="/membership">
                       Signup
                     </Link>
                   </Button>
                   <br />
-                  <Link className="text-white pt-3" to="/reset">
+                  <Link className="text-white pt-3" to="/forgotPassword">
                     Have You forgotten your account details?
                   </Link>
                 </Form>

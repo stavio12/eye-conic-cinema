@@ -13,7 +13,7 @@ function About() {
           </h1>
 
           <Button id="btn-red" size="lg" variant="danger">
-            <i class="fa fa-film" aria-hidden="true"></i> FIND SHOWTIMES
+            <i className="fa fa-film" aria-hidden="true"></i> FIND SHOWTIMES
           </Button>
         </div>
       </section>
