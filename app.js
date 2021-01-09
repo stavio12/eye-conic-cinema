@@ -38,12 +38,21 @@ const userRouter = require("./routes/userRouter");
 // requiring user models
 
 const User = require("./models/userdb");
-
-mongoose.connect(process.env.DATABASE_LOCAL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
+if (process.env.NODE_ENV === "development") {
+  mongoose.connect(process.env.DATABASE_LOCAL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  });
+  console.log("database local connected");
+} else {
+  mongoose.connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  });
+  console.log("database online connected");
+}
 
 //Security HTTP headers
 app.use(helmet());
