@@ -89,15 +89,6 @@ exports.signup = async (req, res, next) => {
     });
 
     createSendToken(newUser, 201, res);
-
-    // res.status(201).json({
-    //   status: "success",
-    //   token,
-    //   data: {
-    //     user: newUser,
-    //     message: "Email sent to user",
-    //   },
-    // });
   } catch (error) {
     console.log(error);
 

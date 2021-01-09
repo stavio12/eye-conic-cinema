@@ -20,7 +20,6 @@ function Login() {
   const login = async (e) => {
     e.preventDefault();
 
-    console.log("This method is called");
     setIsLoading(true);
 
     try {
@@ -38,7 +37,6 @@ function Login() {
         setIsLoading(false);
 
         //Validate user details
-        console.log(response);
 
         if (response.data.status != 200) {
           //Logout Error Message
@@ -52,7 +50,6 @@ function Login() {
         //Store user data into state
         appDispatch({ type: "LOGIN", payload: { _id: userData.user._id, username: userData.user.username, token: userData.token }, LoggedIn: true });
       });
-      console.log("In here");
     } catch (err) {
       setIsLoading(false);
       if (err.toString() === "Error: Network Error") {

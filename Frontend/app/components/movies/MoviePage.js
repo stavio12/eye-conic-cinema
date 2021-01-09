@@ -16,7 +16,7 @@ function MoviePage() {
     setIsLoading(true);
 
     //search for movie using Id saved in state or params(in case there is refreshing)
-    const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/${appState.movie.id || id}?api_key=8f864e2ec8c367dffca6741f68c59409`).then(async (response) => {
+    const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/${appState.movie.id || id}?api_key=${process.env.MOVIEAPI}`).then(async (response) => {
       const data = await response.data;
       setIsLoading(false);
       setMovies(data);

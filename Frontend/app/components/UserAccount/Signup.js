@@ -33,7 +33,7 @@ function Signup() {
         //If the user account is created redirect the user to Login page
         if (response.statusText === "Created") {
           setIsLoading(false);
-          return (window.location = "/login");
+          return <Redirect to="/login" />;
         } else {
           //If there is any registration error redirect the user to signup page
           setError(response.data);
