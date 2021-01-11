@@ -27,7 +27,7 @@ function ResetPassword() {
       //Sending details to backend server......
       const res = await axios({
         method: "patch",
-        url: `http://localhost:4000/resetPassword/${token}`,
+        url: `https://eyeconic-cinema.herokuapp.com//resetPassword/${token}`,
         data: {
           password: password,
         },

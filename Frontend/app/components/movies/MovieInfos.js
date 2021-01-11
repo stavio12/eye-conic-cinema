@@ -36,8 +36,8 @@ function MovieInfos(movieData) {
         <br />
 
         {/* //Push movie id into link */}
-        <Button className="text-center title" onClick={viewmovie} variant="outline-danger">
-          <Link to={`/movies/${movie.id}`}>GET TICKETS</Link>
+        <Button as={Link} to={`/movies/${movie.id}`} className="text-center title" onClick={viewmovie} variant="outline-danger">
+       GET TICKETS
         </Button>
       </Col>
     </>
