@@ -22,7 +22,7 @@ function Signup() {
       //Sending details to backend server......
       const res = await axios({
         method: "post",
-        url: "http://localhost:4000/signup",
+        url: "https://eyeconic-cinema.herokuapp.com/signup",
         data: {
           username: username,
           email: email,

@@ -10,7 +10,7 @@ function Homepage() {
   const [upcoming, setUpcoming] = useState([]);
 
   useEffect(() => {
-    const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.MOVIEAPI}`).then(async (response) => {
+    const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=8f864e2ec8c367dffca6741f68c59409`).then(async (response) => {
       const data = await response.data.results;
       setUpcoming(data);
     });
