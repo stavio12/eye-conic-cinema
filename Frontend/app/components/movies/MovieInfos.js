@@ -7,15 +7,12 @@ function MovieInfos(movieData) {
 
   return (
     <>
-      <Col xs={12} md={6} lg={4} className="pb-5 mb-5" id="">
+      <Col xs={12} md={6} lg={4} className="pb-5 mb-5 text-center text-lg-left">
         <Image src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`} thumbnail />
         <br />
-        <h6 className="pt-5" data-title={movie.title}>
+        <h6 className="pt-5 " data-title={movie.title}>
           Title:
           <span className="font-weight-bolder">{movie.title}</span>
-          <span className="d-none" id="ID">
-            {movie.id}
-          </span>
         </h6>
         <p>
           Release Date: {movie.release_date} <br />

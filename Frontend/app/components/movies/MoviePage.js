@@ -93,10 +93,10 @@ function MoviePage() {
           </h3>
         ) : (
           <Row>
-            <Col>
+            <Col xs={12} md={6}>
               <Image src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movies.poster_path}`} thumbnail />
             </Col>
-            <Col>
+            <Col xs={12} md={6}>
               <h1> {movies.title}</h1>
               <br />
               <p>{movies.overview}</p>

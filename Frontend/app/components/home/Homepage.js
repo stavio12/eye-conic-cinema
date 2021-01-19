@@ -19,7 +19,7 @@ function Homepage() {
   return (
     <>
       <section id="carousel" className="pb-5">
-        <Carousel>
+        <Carousel fluid="true">
           <Carousel.Item id="slide-head" interval={1000}>
             <div id="slider-home">
               <div className="w-75 mx-auto p-5">
@@ -103,10 +103,10 @@ function Homepage() {
               <p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
             </Col>
 
-            <Col xs={12} sm={8}>
+            <Col xs={12} sm={7}>
               <div className="border border-blue ml-3">
                 <Container>
-                  <Row className="m-4">
+                  <Row className="m-4" fluid="true">
                     <Col xs={12} sm={12} md={6}>
                       <h4>Amazing Theaters</h4>
                       <br />
@@ -143,8 +143,8 @@ function Homepage() {
       <section id="playing" className="pt-5 pb-5 mt-5 mb-5 text-center">
         <Container>
           <Row>
-            <Col xs={12} md={12} lg={6} fluid="true">
-              <Image id="joke" src={Joke} />
+            <Col xs={12} md={12} lg={6}>
+              <Image id="joke" src={Joke} fluid="true" />
             </Col>
 
             <Col xs={12} md={12} lg={6} fluid="true" className="pt-5 mt-5">
@@ -165,7 +165,7 @@ function Homepage() {
         </Container>
       </section>
 
-      <section id="coming-soon" className="pt-5 pb-5 mt-5 mb-5">
+      <section id="coming-soon" className="pt-5 pb-5 mt-5 mb-5 text-center text-lg-left">
         <Container>
           <Row>
             <Col>
