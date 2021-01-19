@@ -2,28 +2,82 @@ import React, { useEffect, useContext, useState } from "react";
 import Axios from "axios";
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
-import { Button, Image, Row, Container, Col, Spinner } from "react-bootstrap";
+import { Button, Image, Row, Container, Col, Spinner, Modal } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+
+function MyVerticallyCenteredModal(props) {
+  return (
+    <Modal {...props} aria-labelledby="contained-modal-title-vcenter" centered>
+      <Modal.Header className="bg-dark" closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">Modal heading</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="bg-dark">
+        <h4>Centered Modal</h4>
+        <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+      </Modal.Body>
+      <Modal.Footer className="bg-dark">
+        <Button variant="outline-danger" onClick={props.onHide}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
+function MyCenteredModal(props) {
+  return (
+    <Modal {...props} aria-labelledby="contained-modal-title-vcenter" centered>
+      <Modal.Header className="bg-dark" closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">Modal heading</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="bg-dark">
+        <h4>Centered Modal</h4>
+        <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio,.</p>
+      </Modal.Body>
+      <Modal.Footer className="bg-dark">
+        <Button variant="outline-danger" onClick={props.onHide}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
 
 function MoviePage() {
   const appDispatch = useContext(DispatchContext);
   const appState = useContext(StateContext);
   const [movies, setMovies] = useState("");
-  const [Loading, setIsLoading] = useState();
+  const [Loading, setIsLoading] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
+  const [runtime, setRuntime] = useState(0);
   let { id } = useParams();
 
-  useEffect(() => {
-    setIsLoading(true);
+  //Setting run time
+  const time = (num) => {
+    var hours = Math.floor(num / 60);
+    var minutes = num % 60;
+    return `${hours} hrs : ${minutes} mins`;
+  };
 
-    //search for movie using Id saved in state or params(in case there is refreshing)
-    const MovieFetch = Axios.get(`https://api.themoviedb.org/3/movie/${appState.movie.id || id}?api_key=${process.env.MOVIEAPI}`).then(async (response) => {
+  useEffect(() => {
+    const MovieFetch = async () => {
+      //search for movie using Id in Params
+      const response = await Axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=8f864e2ec8c367dffca6741f68c59409`);
       const data = await response.data;
-      setIsLoading(false);
       setMovies(data);
-    });
-  }, [Loading, movies, id]);
+
+      setRuntime(time(data.runtime));
+
+      setIsLoading(false);
+      appDispatch({ type: "MOVIE", payload: movies.title });
+    };
+
+    MovieFetch();
+    time();
+  }, [movies, id]);
 
   const buyTicket = () => {
+    setModalShow(true);
     if (movies) {
       appDispatch({ type: "TICKET", payload: movies.title });
     }
@@ -33,6 +87,11 @@ function MoviePage() {
     <>
       <Container>
         {Loading ? (
+          <h3 className="text-center">
+            <Spinner animation="border" />
+            Loading Please Wait
+          </h3>
+        ) : (
           <Row>
             <Col>
               <Image src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movies.poster_path}`} thumbnail />
@@ -57,16 +116,14 @@ function MoviePage() {
                 </small>
                 <br />
               </h5>
+              <h5>Runtime: {runtime}</h5>
               <Button className="text-center title" onClick={buyTicket} variant="outline-danger" block>
                 BUY TICKETS
               </Button>
             </Col>
+            <MyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />
+            {/* {appState.LoggedIn ? : <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />} */}
           </Row>
-        ) : (
-          <h3 className="text-center">
-            <Spinner animation="border" />
-            Loading Please Wait
-          </h3>
         )}
       </Container>
     </>

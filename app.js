@@ -9,6 +9,7 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 dotenv.config({ path: "./config.env" });
@@ -21,7 +22,7 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
-app.use(express.static(path.join(__dirname, "build")));
+// app.use(express.static(path.join(__dirname, "build")));
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
@@ -29,8 +30,7 @@ app.get("/*", (req, res) => {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
-
+app.use(cors({ origin: true, credentials: true }));
 //Routes
 const userRouter = require("./routes/userRouter");
 // const guestRouter = require("./routes/guestRouter");
@@ -65,20 +65,22 @@ if (process.env.NODE_ENV === "development") {
 
 //body parse... reading data from body to req.body
 app.use(express.json({ limit: "50kb" }));
-
+app.use(cookieParser());
 //data sanization against nosql query injection
 app.use(mongoSanitize());
 
 //sessions
-app.use(
-  session({
-    secret: "eye-conic-cinema",
-    resave: true,
-    saveUninitialized: true,
-  })
-);
+// app.use(
+//   session({
+//     secret: "eye-conic-cinema",
+//     resave: true,
+//     saveUninitialized: true,
+//   })
+// );
 
 app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  console.log(req.cookies.jwt);
   next();
 });
 

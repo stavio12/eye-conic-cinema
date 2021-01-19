@@ -19,7 +19,7 @@ function ForgotPassword() {
       //Sending details to backend server......
       const res = await axios({
         method: "post",
-        url: "https://eyeconic-cinema.herokuapp.com//forgotPassword",
+        url: "https://eyeconic-cinema.herokuapp.com/forgotPassword",
         data: {
           email: email,
         },

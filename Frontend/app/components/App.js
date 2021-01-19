@@ -31,18 +31,17 @@ import ResetPassword from "./UserAccount/ResetPassword";
 
 const App = () => {
   const initialState = {
-    loading: Boolean(),
+    loading: Boolean(localStorage.getItem("Token Login")),
     LoggedIn: false,
     error: "",
     user: {
-      _id: null,
-      username: null,
-      token: null,
+      // saving user login details into state and local storage
+      // avartar: localStorage.getItem("Avatar"),
+      _id: localStorage.getItem("ID"),
+      username: localStorage.getItem("UserName"),
+      token: localStorage.getItem("Token Login"),
     },
-    movie: {
-      title: "",
-      id: "",
-    },
+    Movie: "",
     Ticket: "",
   };
 
@@ -65,7 +64,7 @@ const App = () => {
 
       case "MOVIE":
         return {
-          movie: action.payload,
+          Movie: action.payload,
         };
 
       case "TICKET":
@@ -77,17 +76,23 @@ const App = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  useEffect(() => {
+    document.title = "Eyeconic || EXPERINCE MOVIES";
+    if (state.LoggedIn) {
+      //saving user details into local storage from state
+      localStorage.setItem("Token Login", state.user.token);
+      localStorage.setItem("UserName", state.user.username);
+      localStorage.setItem("ID", state.user._id);
+    } else {
+      localStorage.removeItem("Token Login");
+      localStorage.removeItem("UserName");
+      localStorage.removeItem("ID");
+    }
+  }, [DocumentTitle, state.LoggedIn]);
+
   const bodyGuard = (Component) => {
     return state.LoggedIn ? <Component /> : <Redirect to="/login" />;
   };
-
-  useEffect(
-    () => {
-      document.title = "Eyeconic || EXPERINCE MOVIES";
-    },
-    [DocumentTitle],
-    [state.movie]
-  );
 
   return (
     <StateContext.Provider value={state}>
@@ -108,7 +113,11 @@ const App = () => {
                 <Movies />
               </DocumentTitle>
             </Route>
-
+            <Route path="/movies/:id" exact>
+              <DocumentTitle title={`Eyeconic || ${state.Movie}`}>
+                <MoviePage />
+              </DocumentTitle>
+            </Route>
             <Route path="/calender/" exact>
               <DocumentTitle title="Eyeconic || Calender">
                 <Calender />
@@ -142,12 +151,6 @@ const App = () => {
             <Route path="/:id/dashboard/" exact>
               <DocumentTitle title="Eyeconic || Welcome">{bodyGuard(Dashboard)}</DocumentTitle>
             </Route>
-
-            {/* <Route path="/movies/:id" exact>
-              <DocumentTitle title={`Eyeconic || ${state.movie.title}`}>
-                <MoviePage />
-              </DocumentTitle>
-            </Route> */}
 
             <Route path="/membership/:id/signup" exact>
               <DocumentTitle title={`Eyeconic || Membership`}>

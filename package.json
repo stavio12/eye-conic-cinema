@@ -4,9 +4,6 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "frontend": "npm run dev --prefix Frontend",
-    "dev": "concurrently \"npm run app.js\" \"npm run frontend\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
   "author": "kobla stavio",
@@ -20,6 +17,7 @@
     "body-parser": "^1.19.0",
     "concurrently": "^5.3.0",
     "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",

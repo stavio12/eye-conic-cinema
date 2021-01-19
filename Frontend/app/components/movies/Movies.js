@@ -1,26 +1,22 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Button, Image, Row, Container, Col, Spinner } from "react-bootstrap";
-import Axios from "axios";
+import axios from "axios";
 
 import MovieInfos from "./MovieInfos";
 
-import DispatchContext from "../DispatchContext";
-
 function Movies() {
   const [movies, setMovies] = useState([]);
-  const [Loading, setIsLoading] = useState();
-
-  const appDispatch = useContext(DispatchContext);
+  const [Loading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
-
-    const MovieFetch = Axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=8f864e2ec8c367dffca6741f68c59409&primary_release_date.gte=2020-10-01&primary_release_date.lte=2021-10-22`).then(async (response) => {
+    const MovieFetch = async () => {
+      const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=8f864e2ec8c367dffca6741f68c59409&primary_release_date.gte=2020-10-01&primary_release_date.lte=2021-10-22`);
       const data = await response.data.results;
-      setIsLoading(false);
       setMovies(data);
-    });
-  }, [Loading]);
+      setIsLoading(false);
+    };
+    MovieFetch();
+  }, []);
 
   return (
     <>
@@ -41,17 +37,17 @@ function Movies() {
       <section id="nowplayingmovies" className="pt-5 pb-5 mt-5 mb-5">
         <Container>
           {Loading ? (
+            <h3 className="text-center">
+              <Spinner animation="border" />
+              Loading Please Wait
+            </h3>
+          ) : (
             <Row>
               {movies.map((movieData, id) => {
                 return <MovieInfos key={id} movieData={movieData} />;
               })}
             </Row>
-          ) : (
-            <h3 className="text-center">
-              <Spinner animation="border" />
-              Loading Please Wait
-            </h3>
-          )}{" "}
+          )}
         </Container>
       </section>
     </>

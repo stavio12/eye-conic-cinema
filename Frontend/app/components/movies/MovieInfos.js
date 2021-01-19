@@ -2,20 +2,8 @@ import React, { useEffect, useContext } from "react";
 import { Button, Image, Row, Container, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import DispatchContext from "../DispatchContext";
-
 function MovieInfos(movieData) {
   const movie = movieData.movieData;
-  const appDispatch = useContext(DispatchContext);
-
-  const viewmovie = (e) => {
-    if (e.target.classList.contains("title")) {
-      //print out movie ID
-      const getID = e.target.parentElement;
-      const ID = getID.querySelector("#ID").textContent;
-      appDispatch({ type: "MOVIE", payload: { title: movie.title, id: ID } });
-    }
-  };
 
   return (
     <>
@@ -36,8 +24,8 @@ function MovieInfos(movieData) {
         <br />
 
         {/* //Push movie id into link */}
-        <Button as={Link} to={`/movies/${movie.id}`} className="text-center title" onClick={viewmovie} variant="outline-danger">
-       GET TICKETS
+        <Button as={Link} to={`/movies/${movie.id}`} className="text-center title" variant="outline-danger">
+          GET TICKETS
         </Button>
       </Col>
     </>

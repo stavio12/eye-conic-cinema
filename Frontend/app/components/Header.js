@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer, useState, useContext } from "react";
 import { Navbar, Button, Form, Nav, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import UserHeader from "./UserAccount/UserHeader";
 import logo from "../src/logo.png";
 
 function Header() {
