@@ -3,7 +3,6 @@ const path = require("path");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
-const session = require("express-session");
 const cors = require("cors");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
@@ -80,7 +79,6 @@ app.use(mongoSanitize());
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.cookies.jwt);
   next();
 });
 

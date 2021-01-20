@@ -1,10 +1,10 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Table, Form, Container, Col, Row, Nav, Navbar } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 
 function ActiveOrder() {
   return (
     <>
-      <Table striped bordered hover>
+      <Table striped bordered hover className="text-white">
         <thead>
           <tr>
             <th>#</th>

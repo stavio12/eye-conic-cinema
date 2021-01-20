@@ -35,6 +35,8 @@ function Login() {
         },
       }).then(async (response) => {
         //If sending details to server turn on spinners and disable forms to readonly
+        console.log(response);
+
         setIsLoading(false);
 
         //Validate user details
@@ -47,7 +49,6 @@ function Login() {
         }
         //Login user and send data into state
         const userData = await response.data;
-
         //Store user data into state
         appDispatch({ type: "LOGIN", payload: { _id: userData.user._id, username: userData.user.username, token: userData.token }, LoggedIn: true });
       });

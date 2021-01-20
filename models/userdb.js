@@ -10,6 +10,23 @@ let userSchema = new mongoose.Schema({
     type: String,
     select: false,
   },
+  orders: [
+    {
+      id: String,
+      movie: String,
+      runtime: String,
+      view: String,
+      payment: String,
+    },
+  ],
+  watchList: [
+    {
+      id: String,
+      movie: String,
+      runtime: String,
+      view: String,
+    },
+  ],
   avartar: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,

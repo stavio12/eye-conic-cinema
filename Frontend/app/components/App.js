@@ -7,7 +7,7 @@ import DispatchContext from "./DispatchContext";
 
 import Header from "./Header";
 import Promo from "./Promo";
-import Flashmsg from "./Flashmsg";
+import ErrorPage from "./ErrorPage";
 import Footer from "./Footer";
 import Homepage from "./home/Homepage";
 import Movies from "./movies/Movies";
@@ -31,15 +31,15 @@ import ResetPassword from "./UserAccount/ResetPassword";
 
 const App = () => {
   const initialState = {
-    loading: Boolean(localStorage.getItem("Token Login")),
+    loading: Boolean(false),
     LoggedIn: false,
     error: "",
     user: {
       // saving user login details into state and local storage
       // avartar: localStorage.getItem("Avatar"),
-      _id: localStorage.getItem("ID"),
-      username: localStorage.getItem("UserName"),
-      token: localStorage.getItem("Token Login"),
+      _id: null,
+      username: null,
+      token: null,
     },
     Movie: "",
     Ticket: "",
@@ -78,16 +78,6 @@ const App = () => {
 
   useEffect(() => {
     document.title = "Eyeconic || EXPERINCE MOVIES";
-    if (state.LoggedIn) {
-      //saving user details into local storage from state
-      localStorage.setItem("Token Login", state.user.token);
-      localStorage.setItem("UserName", state.user.username);
-      localStorage.setItem("ID", state.user._id);
-    } else {
-      localStorage.removeItem("Token Login");
-      localStorage.removeItem("UserName");
-      localStorage.removeItem("ID");
-    }
   }, [DocumentTitle, state.LoggedIn]);
 
   const bodyGuard = (Component) => {
@@ -167,6 +157,12 @@ const App = () => {
             <Route path="/resetPassword/:token" exact>
               <DocumentTitle title={`Eyeconic || Reset Password`}>
                 <ResetPassword />
+              </DocumentTitle>
+            </Route>
+
+            <Route path="*" exact>
+              <DocumentTitle title={`Eyeconic || 404 Error`}>
+                <ErrorPage />
               </DocumentTitle>
             </Route>
           </Switch>
