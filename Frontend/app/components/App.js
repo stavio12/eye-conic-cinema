@@ -22,7 +22,7 @@ import UserHeader from "./UserAccount/UserHeader";
 import Dashboard from "./UserAccount/Dashboard";
 import ForgotPassword from "./UserAccount/ForgotPassword";
 import ResetPassword from "./UserAccount/ResetPassword";
-import Flashmsg from "./Flashmsg";
+// import Flashmsg from "./Flashmsg";
 
 //States
 // const [error, setError] = useState("");
@@ -92,7 +92,7 @@ const App = () => {
       <DispatchContext.Provider value={dispatch}>
         <Router>
           {state.LoggedIn ? <UserHeader /> : <Header />}
-          <Flashmsg messages={state.error} />
+          {/* <Flashmsg messages={state.error} /> */}
 
           <Switch>
             <Route path="/" exact>
