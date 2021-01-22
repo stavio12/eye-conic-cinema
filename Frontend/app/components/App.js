@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer, useState, useContext } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-// import { useImmerReducer } from "use-immer";
 import DocumentTitle from "react-document-title";
 import StateContext from "./StateContext";
 import DispatchContext from "./DispatchContext";
@@ -23,6 +22,7 @@ import UserHeader from "./UserAccount/UserHeader";
 import Dashboard from "./UserAccount/Dashboard";
 import ForgotPassword from "./UserAccount/ForgotPassword";
 import ResetPassword from "./UserAccount/ResetPassword";
+import Flashmsg from "./Flashmsg";
 
 //States
 // const [error, setError] = useState("");
@@ -33,13 +33,15 @@ const App = () => {
   const initialState = {
     loading: Boolean(false),
     LoggedIn: false,
-    error: "",
+    error: null,
     user: {
       // saving user login details into state and local storage
       // avartar: localStorage.getItem("Avatar"),
       _id: null,
       username: null,
       token: null,
+      watchList: null,
+      orders: null,
     },
     Movie: "",
     Ticket: "",
@@ -56,6 +58,7 @@ const App = () => {
         return {
           error: action.payload,
         };
+
       case "LOGOUT":
         return {
           LoggedIn: false,
@@ -89,7 +92,7 @@ const App = () => {
       <DispatchContext.Provider value={dispatch}>
         <Router>
           {state.LoggedIn ? <UserHeader /> : <Header />}
-          {/* <Flashmsg messages={state.error} /> */}
+          <Flashmsg messages={state.error} />
 
           <Switch>
             <Route path="/" exact>

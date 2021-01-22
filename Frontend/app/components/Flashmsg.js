@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
+// import React, { useEffect, useState } from "react";
+// import FlashMessage from "react-flash-message";
 
-function Flashmsg(messages) {
-  console.log(messages.messages);
-  return (
-    <div className="floating-alerts">
-      <div className="alert alert-success text-center  shadow-sm ">{messages.messages}</div>
-    </div>
-  );
-}
+// function Flashmsg(msg) {
+//   return (
+//     <div className="mw-25">
+//       {
+//         <FlashMessage duration={10000}>
+//           <div>{msg.messages}</div>
+//         </FlashMessage>
+//       }
+//     </div>
+//   );
+// }
 
-export default Flashmsg;
+// export default Flashmsg;

@@ -35,7 +35,6 @@ function Login() {
         },
       }).then(async (response) => {
         //If sending details to server turn on spinners and disable forms to readonly
-        console.log(response);
 
         setIsLoading(false);
 
@@ -50,7 +49,7 @@ function Login() {
         //Login user and send data into state
         const userData = await response.data;
         //Store user data into state
-        appDispatch({ type: "LOGIN", payload: { _id: userData.user._id, username: userData.user.username, token: userData.token }, LoggedIn: true });
+        appDispatch({ type: "LOGIN", payload: { _id: userData.user._id, username: userData.user.username, token: userData.token, orders: userData.user.orders, watchList: userData.user.watchList }, LoggedIn: true });
       });
     } catch (err) {
       setIsLoading(false);
@@ -77,13 +76,13 @@ function Login() {
               <Col xs={12} lg={{ span: 6, offset: 3 }}>
                 <Form className="text-center m-5 p-5 mt-5" id="form" onSubmit={login} method="POST">
                   {/* Show error message if there is any */}
-
-                  {appState.error ? (
-                    <h4 className="bg-danger text-white">
-                      ! <br />
-                      {appState.error}
-                    </h4>
-                  ) : null}
+                  {/* 
+                  // {appState.error ? (
+                  //   <h4 className="bg-danger text-white">
+                  //     ! <br />
+                  //     {appState.error}
+                  //   </h4>
+                  // ) : null} */}
 
                   <Form.Group controlId="formBasicEmail">
                     <Form.Label className="h5">Email address</Form.Label>
