@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Form, Container, Col, Row, Spinner } from "react-bootstrap";
 import { Link, Redirect } from "react-router-dom";
+import { showAlert } from "../Flashmsg";
 
 function Signup() {
   const [username, setUserName] = useState();
@@ -45,8 +46,16 @@ function Signup() {
       //Clear up form after submitting
       document.getElementById("form").reset();
     } catch (err) {
-      setError(err.toString());
       setIsLoading(false);
+      if (err.toString() === "Error: Network Error") {
+        //Log network erorr here
+
+        showAlert("danger", err.toString());
+      }
+
+      //Log out any other erorr here
+
+      showAlert("danger", err.toString());
     }
   };
 

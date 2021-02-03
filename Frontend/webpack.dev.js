@@ -7,7 +7,7 @@ module.exports = merge(common, {
   mode: "development",
   devtool: "inline-source-map",
   devServer: {
-    contentBase: path.resolve(__dirname, "../build"),
+    contentBase: path.resolve(__dirname, "./build"),
     compress: true,
     port: 3000,
     open: true,

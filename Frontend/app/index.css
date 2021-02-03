@@ -222,9 +222,15 @@ ul li {
   height: 100vh;
 }
 
-.floating-alerts {
+.alert {
   position: absolute;
   z-index: 999;
-  left: 50%;
-  transform: translateX(-50%);
+}
+
+.alert--danger {
+  background-color: #db4d4b;
+}
+
+.alert--success {
+  background-color: #20bf6b;
 }

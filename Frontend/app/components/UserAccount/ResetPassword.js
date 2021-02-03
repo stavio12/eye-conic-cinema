@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Button, Form, Container, Col, Row, Spinner } from "react-bootstrap";
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
+import { showAlert } from "../Flashmsg";
 
 function ResetPassword() {
   const { token } = useParams();
@@ -48,9 +49,15 @@ function ResetPassword() {
       document.getElementById("form").reset();
     } catch (err) {
       setIsLoading(false);
-      console.log(err);
+      if (err.toString() === "Error: Network Error") {
+        //Log network erorr here
 
-      appDispatch({ type: "ERROR", payload: err.toString() });
+        showAlert("danger", err.toString());
+      }
+
+      //Log out any other erorr here
+
+      showAlert("danger", err.toString());
     }
   };
   return (

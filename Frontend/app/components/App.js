@@ -6,7 +6,6 @@ import DispatchContext from "./DispatchContext";
 
 import Header from "./Header";
 import Promo from "./Promo";
-import ErrorPage from "./ErrorPage";
 import Footer from "./Footer";
 import Homepage from "./home/Homepage";
 import Movies from "./movies/Movies";
@@ -160,12 +159,6 @@ const App = () => {
             <Route path="/resetPassword/:token" exact>
               <DocumentTitle title={`Eyeconic || Reset Password`}>
                 <ResetPassword />
-              </DocumentTitle>
-            </Route>
-
-            <Route path="*" exact>
-              <DocumentTitle title={`Eyeconic || 404 Error`}>
-                <ErrorPage />
               </DocumentTitle>
             </Route>
           </Switch>

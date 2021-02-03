@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button, Form, Container, Col, Row, Spinner } from "react-bootstrap";
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
+import { showAlert } from "../Flashmsg";
 
 function ForgotPassword() {
   const [email, setEmail] = useState();
@@ -41,7 +42,15 @@ function ForgotPassword() {
     } catch (err) {
       setIsLoading(false);
 
-      appDispatch({ type: "ERROR", payload: err.toString() });
+      if (err.toString() === "Error: Network Error") {
+        //Log network erorr here
+
+        showAlert("danger", err.toString());
+      }
+
+      //Log out any other erorr here
+
+      showAlert("danger", err.toString());
     }
   };
   return (

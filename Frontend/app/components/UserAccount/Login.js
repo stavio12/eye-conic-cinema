@@ -6,6 +6,7 @@ import Avartar from "./Avartar";
 
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
+import { showAlert } from "../Flashmsg";
 
 function Login() {
   const [email, setEmail] = useState();
@@ -26,7 +27,7 @@ function Login() {
       //Sending details to backend server......
       const res = await axios({
         method: "post",
-        url: "http://localhost:4000/login",
+        url: "https://eyeconic-cinema.herokuapp.com/login",
         withCredentials: true,
         credentials: "include",
         data: {
@@ -56,12 +57,12 @@ function Login() {
       if (err.toString() === "Error: Network Error") {
         //Log network erorr here
 
-        appDispatch({ type: "ERROR", payload: err.toString() });
+        showAlert("danger", err.toString());
       }
 
       //Log out any other erorr here
 
-      // appDispatch({ type: "ERROR", payload: err.toString() });
+      showAlert("danger", err.toString());
     }
   };
 

@@ -1,16 +1,12 @@
-// import React, { useEffect, useState } from "react";
-// import FlashMessage from "react-flash-message";
+export const hideAlert = () => {
+  const el = document.querySelector(".alert");
+  if (el) el.parentElement.removeChild(el);
+};
 
-// function Flashmsg(msg) {
-//   return (
-//     <div className="mw-25">
-//       {
-//         <FlashMessage duration={10000}>
-//           <div>{msg.messages}</div>
-//         </FlashMessage>
-//       }
-//     </div>
-//   );
-// }
+export const showAlert = (type, msg) => {
+  hideAlert();
+  const errorMsg = `<div class="alert alert--${type} text-white text-center col-6 offset-3 mt-5"> <h5>${msg}</h5> </div>`;
+  document.querySelector("body").insertAdjacentHTML("beforebegin", errorMsg);
 
-// export default Flashmsg;
+  window.setTimeout(hideAlert, 5000);
+};
