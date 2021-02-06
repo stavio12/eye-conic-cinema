@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Redirect } from "react-router-dom";
 import { Button, Form, Container, Col, Row, Spinner } from "react-bootstrap";
 import axios from "axios";
+import { showAlert } from "../Flashmsg";
 
 function MembershipSignup() {
   const { id } = useParams();
@@ -9,7 +10,6 @@ function MembershipSignup() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [membershipType, setMemberShipType] = useState();
-  const [error, setError] = useState("");
   const [loading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function MembershipSignup() {
       //Sending details to backend server......
       const res = await axios({
         method: "post",
-        url: "https:http://localhost:4000/signup",
+        url: "https://eyeconic-cinema.herokuapp.com/signup",
         data: {
           username: username,
           email: email,
@@ -36,31 +36,36 @@ function MembershipSignup() {
           membershipType: membershipType,
         },
       }).then((response) => {
-        //If sending details to server turn on spinners and disable forms to readonly
-        //If the user account is created redirect the user to Login page
-        if (response.statusText === "Created") {
-          setIsLoading(false);
+        setIsLoading(false);
+        // If the user account is created redirect the user to Login page
+        if (response.data.status === "success") {
           return (window.location = "/login");
-        } else {
-          //If there is any registration error redirect the user to signup page
-          setError(response.data);
-          setIsLoading(false);
         }
+        // If there is any registration error redirect the user to signup page
+
+        showAlert("danger", response.data.data);
       });
       console.log("In here");
 
       //Clear up form after submitting
       document.getElementById("form").reset();
     } catch (err) {
-      setError(err.toString());
       setIsLoading(false);
+      if (err.toString() === "Error: Network Error") {
+        //Log network erorr here
+        showAlert("danger", err.toString());
+      }
+
+      //Log out any other erorr here
+
+      showAlert("danger", err.toString());
     }
   };
 
   return (
     <>
-      <section id="membership">
-        <div className="pt-5 p-5 text-center">
+      <section id="signup" className="d-none d-md-block">
+        <div className="pt-5 p-5 text-center ">
           <h4 className="pt-5 mt-5 text-danger">THEATER PASSES</h4>
 
           <h1 className="mt-3">
@@ -77,14 +82,6 @@ function MembershipSignup() {
           <Row>
             <Col xs={12} lg={{ span: 6, offset: 3 }}>
               <Form className="text-center m-5 p-5 mt-5" id="form" onSubmit={register} method="POST">
-                {/* Show error message if there is any */}
-
-                {error ? (
-                  <h4 className="bg-danger text-white">
-                    ! <br />
-                    {error}
-                  </h4>
-                ) : null}
                 <Form.Group controlId="formBasicEmail" className="pt-5">
                   <Form.Label className="h5">Username</Form.Label>
                   <Form.Control

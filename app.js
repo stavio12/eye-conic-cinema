@@ -1,38 +1,45 @@
 const express = require("express");
 const path = require("path");
-const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
-const morgan = require("morgan");
-const rateLimit = require("express-rate-limit");
-const cookieParser = require("cookie-parser");
+const xss = require("xss-clean");
 
 const app = express();
 dotenv.config({ path: "./config.env" });
 
-//Limiter to prevent soo many requests
+const AppError = require("./utils/appError");
+const globalError = require("./controllers/errorController");
+const userRouter = require("./routes/userRouter");
+
+//middle wares
+
+//Security HTTP headers
+app.use(helmet());
+
+//Limiter to prevent soo many requests from same IP
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
   message: "Too many request from this IP, Please try again in an hour ",
 });
-
-app.use(limiter);
-// app.use(express.static(path.join(__dirname, "build")));
+// app.use("/:name", limiter);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+//data sanization against nosql query injection
+app.use(mongoSanitize());
+
+//data sanization against xss
+app.use(xss());
+
 app.use(cors({ origin: true, credentials: true }));
-//Routes
-const userRouter = require("./routes/userRouter");
-// const guestRouter = require("./routes/guestRouter");
 
-// requiring user models
-
-const User = require("./models/userdb");
 if (process.env.NODE_ENV === "development") {
   mongoose.connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true,
@@ -40,48 +47,30 @@ if (process.env.NODE_ENV === "development") {
     useCreateIndex: true,
   });
   console.log("database local connected");
-} else {
+} else if (process.env.NODE_ENV === "production") {
   mongoose.connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
   });
-  console.log("database online connected");
+  console.log("database connected");
 }
-
-//Security HTTP headers
-app.use(helmet());
-
-//Middlewires
-//development login
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
-
-//body parse... reading data from body to req.body
-app.use(express.json({ limit: "50kb" }));
-app.use(cookieParser());
-//data sanization against nosql query injection
-app.use(mongoSanitize());
-
-//sessions
-// app.use(
-//   session({
-//     secret: "eye-conic-cinema",
-//     resave: true,
-//     saveUninitialized: true,
-//   })
-// );
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
 
-// app.use(guestRouter);
+//Routes
 app.use(userRouter);
+
+app.all("*", (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
+
+app.use(globalError);
 
 const port = process.env.PORT;
 app.listen(port, () => {
-  console.log("Sever Running on Port " + port);
+  console.log("Sever running on port " + port);
 });

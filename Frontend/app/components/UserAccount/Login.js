@@ -27,7 +27,7 @@ function Login() {
       //Sending details to backend server......
       const res = await axios({
         method: "post",
-        url: "https://eyeconic-cinema.herokuapp.com/login",
+        url: "http://localhost:4000/login",
         withCredentials: true,
         credentials: "include",
         data: {
@@ -36,33 +36,21 @@ function Login() {
         },
       }).then(async (response) => {
         //If sending details to server turn on spinners and disable forms to readonly
-
         setIsLoading(false);
-
-        //Validate user details
-
-        if (response.data.status != 200) {
-          //Logout Error Message
-          appDispatch({ type: "ERROR", payload: response.data.data });
-          // //Clear up form after submitting
-          document.getElementById("form").reset();
+        console.log(response.data);
+        if (response.status === 200) {
+          appDispatch({ type: "LOGIN", payload: response.data.user, LoggedIn: true });
+          setUser(response.data.user);
         }
-        //Login user and send data into state
-        const userData = await response.data;
-        //Store user data into state
-        appDispatch({ type: "LOGIN", payload: { _id: userData.user._id, username: userData.user.username, token: userData.token, orders: userData.user.orders, watchList: userData.user.watchList }, LoggedIn: true });
       });
     } catch (err) {
       setIsLoading(false);
       if (err.toString() === "Error: Network Error") {
         //Log network erorr here
-
         showAlert("danger", err.toString());
+      } else if (err.response !== undefined) {
+        showAlert("danger", err.response.data.message);
       }
-
-      //Log out any other erorr here
-
-      showAlert("danger", err.toString());
     }
   };
 
@@ -76,15 +64,6 @@ function Login() {
             <Row>
               <Col xs={12} lg={{ span: 6, offset: 3 }}>
                 <Form className="text-center m-5 p-5 mt-5" id="form" onSubmit={login} method="POST">
-                  {/* Show error message if there is any */}
-                  {/* 
-                  // {appState.error ? (
-                  //   <h4 className="bg-danger text-white">
-                  //     ! <br />
-                  //     {appState.error}
-                  //   </h4>
-                  // ) : null} */}
-
                   <Form.Group controlId="formBasicEmail">
                     <Form.Label className="h5">Email address</Form.Label>
                     <Form.Control

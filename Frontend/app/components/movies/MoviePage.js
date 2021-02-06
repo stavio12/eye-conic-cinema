@@ -1,51 +1,12 @@
 import React, { useEffect, useContext, useState } from "react";
 import Axios from "axios";
 import DispatchContext from "../DispatchContext";
-import StateContext from "../StateContext";
-import { Button, Image, Row, Container, Col, Spinner, Modal } from "react-bootstrap";
+import MovieModal from "./MovieModal";
+import { Button, Image, Row, Container, Col, Spinner, Modal, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-
-function MyVerticallyCenteredModal(props) {
-  return (
-    <Modal {...props} aria-labelledby="contained-modal-title-vcenter" centered>
-      <Modal.Header className="bg-dark" closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">Modal heading</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="bg-dark">
-        <h4>Centered Modal</h4>
-        <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-      </Modal.Body>
-      <Modal.Footer className="bg-dark">
-        <Button variant="outline-danger" onClick={props.onHide}>
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
-
-function MyCenteredModal(props) {
-  return (
-    <Modal {...props} aria-labelledby="contained-modal-title-vcenter" centered>
-      <Modal.Header className="bg-dark" closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">Modal heading</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="bg-dark">
-        <h4>Centered Modal</h4>
-        <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio,.</p>
-      </Modal.Body>
-      <Modal.Footer className="bg-dark">
-        <Button variant="outline-danger" onClick={props.onHide}>
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
 
 function MoviePage() {
   const appDispatch = useContext(DispatchContext);
-  const appState = useContext(StateContext);
   const [movies, setMovies] = useState("");
   const [Loading, setIsLoading] = useState(true);
   const [modalShow, setModalShow] = useState(false);
@@ -69,7 +30,6 @@ function MoviePage() {
       setRuntime(time(data.runtime));
 
       setIsLoading(false);
-      appDispatch({ type: "MOVIE", payload: movies.title });
     };
 
     MovieFetch();
@@ -78,9 +38,6 @@ function MoviePage() {
 
   const buyTicket = () => {
     setModalShow(true);
-    if (movies) {
-      appDispatch({ type: "TICKET", payload: movies.title });
-    }
   };
 
   return (
@@ -121,7 +78,7 @@ function MoviePage() {
                 BUY TICKETS
               </Button>
             </Col>
-            <MyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />
+            <MovieModal show={modalShow} title={movies.title} onHide={() => setModalShow(false)} />
             {/* {appState.LoggedIn ? : <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />} */}
           </Row>
         )}

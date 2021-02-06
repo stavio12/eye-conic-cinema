@@ -1,9 +1,9 @@
 const { promisify } = require("util");
-const async = require("async");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userdb");
-
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("./../utils/appError");
 const sendEmail = require("../utils/email");
 
 //control token ids
@@ -33,7 +33,7 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 //Protect routes and authenticate users
-exports.bodyGuard = async (req, res, next) => {
+exports.bodyGuard = catchAsync(async (req, res, next) => {
   // Getting token and check if it exists
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
@@ -64,14 +64,14 @@ exports.bodyGuard = async (req, res, next) => {
   req.user = freshUser;
 
   next();
-};
+});
 
-exports.signup = async (req, res, next) => {
+exports.signup = catchAsync(async (req, res, next) => {
   //Get Details from frontend and check if user is already registered or not
   const oldUser = await User.findOne({ email: req.body.email });
 
   if (oldUser) {
-    return res.send({ status: 404, data: "You already have an account with us" });
+    return next(new AppError("You already have an account with us", 400));
   }
 
   const newUser = await User.create(req.body);
@@ -93,42 +93,41 @@ exports.signup = async (req, res, next) => {
   } catch (error) {
     console.log(error);
 
-    return res.send({ status: 500, data: "There was an error sending your email" });
+    return next(new AppError("There was an error sending your email", 500));
   }
-};
+});
 
-exports.login = async (req, res, next) => {
-  //Get Details from frontend
-
+exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  // verify if password and email exist
+
+  // verify if password and email was is available
   if (!email || !password) {
-    return res.send({ status: 400, data: "Please Provide Email and Password" });
+    return next(new AppError("Please Provide Email and Password", 400));
   }
+
   // Check if user exist and password is correct
   const user = await User.findOne({ email }).select("+password");
 
   //compare user password to password in the dbs
-
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return res.send({ status: 401, data: "Incorrect email or password" });
+    return next(new AppError("Incorrect email or password", 401));
   }
 
-  // If everything is okay send token to client
+  //if everyting is okay send token and data client
+  const token = signToken(user._id);
   createSendToken(user, 200, res);
+});
 
-  console.log("login Successful!");
-};
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  console.log(req.body.email);
 
-exports.forgotPassword = async (req, res, next) => {
   if (!req.body.email) {
-    return res.send({ status: 404, data: "Please Provide an email!" });
+    return next(new AppError("Please Provide an email!", 404));
   }
-
   // Get User based on email
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res.send({ status: 404, data: "There is no user with this email address" });
+    return next(new AppError("There is no user with this email address", 404));
   }
 
   //Generate random token
@@ -138,8 +137,7 @@ exports.forgotPassword = async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   //send token to user's email
-  const resetUrl = `${req.protocol}://${req.get("host")}/resetPassword/${resetToken}`;
-
+  const resetUrl = `${req.protocol}://${req.get("host")}/resetpassword/${resetToken}`;
   const message = `<p> Hi  <b> ${user.username} </b>, You requested for a password reset. Click on the link below <br> <br> <a href="${resetUrl}"> <b> Click here to Reset your password </b> </a> </p>`;
 
   try {
@@ -148,45 +146,39 @@ exports.forgotPassword = async (req, res, next) => {
       subject: "Reset Password Token (valid for 10 min)",
       message: message,
     });
-
-    res.status(200).json({
-      status: "success",
-      data: "Token sent via email",
-    });
+    createSendToken("Token sent via email", 200, res);
   } catch (error) {
     console.log(error);
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
     await user.save({ validateBeforeSave: false });
-    return res.send({ status: 500, data: "There was an error sending your email" });
+    return next(new AppError("There was an error sending your email", 500));
   }
-};
+});
 
-exports.resetPassword = async (req, res, next) => {
+exports.resetPassword = catchAsync(async (req, res, next) => {
   // Get user based on the token
   const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
 
-  const user = await User.findOne({ resetPasswordToken: hashedToken, resetPasswordExpires: { $gt: Date.now() } });
+  const user = await User.findOne({ passwordResetToken: hashedToken, passwordResetExpires: { $gt: Date.now() } });
 
   //check if token has expired
   if (!user) {
-    return res.send({ status: 400, data: "Token is invalid or has expired" });
+    return next(new AppError("Token is invalid or has expired", 400));
   }
   //update password
   user.password = req.body.password;
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpires = undefined;
-  await user.save();
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
 
   //Update password
+  await user.save();
 
   //log user in
   createSendToken(user, 200, res);
+});
 
-  console.log("Reset Successful!");
-};
-
-exports.updatePassword = async (req, res, next) => {
+exports.updatePassword = catchAsync(async (req, res, next) => {
   //Get user from dbs
   const user = await User.findById(req.user.id).select("+password");
 
@@ -203,11 +195,12 @@ exports.updatePassword = async (req, res, next) => {
   createSendToken(user, 200, res);
 
   console.log("Password Updated Successfully!");
-};
+});
 
-// router.get("/logout", authenUser, (req, res) => {
-//   console.log("Hello");
-//   res.logOut();
-
-//   res.send({ status: 200 });
-// });
+exports.logout = catchAsync(async (req, res, next) => {
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.send({ status: 200, data: "success" });
+});

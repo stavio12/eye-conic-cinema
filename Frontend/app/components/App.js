@@ -15,35 +15,16 @@ import Membership from "./membership/Membership";
 import MembershipSignup from "./membership/MembershipSignup";
 import About from "./about/About";
 import Login from "./UserAccount/Login";
-import Signup from "./UserAccount/Signup";
-import Avartar from "./UserAccount/Avartar";
 import UserHeader from "./UserAccount/UserHeader";
 import Dashboard from "./UserAccount/Dashboard";
 import ForgotPassword from "./UserAccount/ForgotPassword";
 import ResetPassword from "./UserAccount/ResetPassword";
-// import Flashmsg from "./Flashmsg";
-
-//States
-// const [error, setError] = useState("");
-// const [loading, setIsLoading] = useState(false);
-// const [user, setUser] = useState();
 
 const App = () => {
   const initialState = {
-    loading: Boolean(false),
     LoggedIn: false,
-    error: null,
-    user: {
-      // saving user login details into state and local storage
-      // avartar: localStorage.getItem("Avatar"),
-      _id: null,
-      username: null,
-      token: null,
-      watchList: null,
-      orders: null,
-    },
-    Movie: "",
-    Ticket: "",
+    user: {},
+    Ticket: null,
   };
 
   const reducer = (state, action) => {
@@ -53,10 +34,6 @@ const App = () => {
           LoggedIn: true,
           user: action.payload,
         };
-      case "ERROR":
-        return {
-          error: action.payload,
-        };
 
       case "LOGOUT":
         return {
@@ -64,10 +41,10 @@ const App = () => {
           user: null,
         };
 
-      case "MOVIE":
-        return {
-          Movie: action.payload,
-        };
+      // case "MOVIE":
+      //   return {
+      //     Movie: action.payload,
+      //   };
 
       case "TICKET":
         return {
@@ -82,6 +59,7 @@ const App = () => {
     document.title = "Eyeconic || EXPERINCE MOVIES";
   }, [DocumentTitle, state.LoggedIn]);
 
+  console.log(state.Ticket);
   const bodyGuard = (Component) => {
     return state.LoggedIn ? <Component /> : <Redirect to="/login" />;
   };
@@ -91,7 +69,6 @@ const App = () => {
       <DispatchContext.Provider value={dispatch}>
         <Router>
           {state.LoggedIn ? <UserHeader /> : <Header />}
-          {/* <Flashmsg messages={state.error} /> */}
 
           <Switch>
             <Route path="/" exact>
@@ -105,11 +82,13 @@ const App = () => {
                 <Movies />
               </DocumentTitle>
             </Route>
+
             <Route path="/movies/:id" exact>
-              <DocumentTitle title={`Eyeconic || ${state.Movie}`}>
+              <DocumentTitle title="Eyeconic || Movies">
                 <MoviePage />
               </DocumentTitle>
             </Route>
+
             <Route path="/calender/" exact>
               <DocumentTitle title="Eyeconic || Calender">
                 <Calender />
@@ -125,12 +104,6 @@ const App = () => {
             <Route path="/about" exact>
               <DocumentTitle title="Eyeconic || About">
                 <About />
-              </DocumentTitle>
-            </Route>
-
-            <Route path="/signup" exact>
-              <DocumentTitle title="Eyeconic || Signup">
-                <Signup />
               </DocumentTitle>
             </Route>
 
