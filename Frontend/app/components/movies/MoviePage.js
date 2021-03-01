@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import Axios from "axios";
 import DispatchContext from "../DispatchContext";
 import MovieModal from "./MovieModal";
-import { Button, Image, Row, Container, Col, Spinner, Modal, Form } from "react-bootstrap";
+import { Button, Image, Row, Container, Col, Spinner } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
 function MoviePage() {

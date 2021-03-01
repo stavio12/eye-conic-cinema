@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row, fieldset, Modal, Form } from "react-bootstrap";
-import axios from "axios";
+import { Button, Col, Modal, Form } from "react-bootstrap";
+import MomoModal from "./MomoModal";
+import CreditCard from "./CreditCard";
+
 function MovieModal(props) {
   const [pcs, setPcs] = useState(1);
   const [cedis, setCedis] = useState(20);
-  const [mall, setMall] = useState("accra");
+  const [mall, setMall] = useState();
+  const [payment, setPayment] = useState();
+  const [momo, setMomo] = useState(false);
+  const [creditCard, setCreditCard] = useState(false);
+  const [buyModal, setBuyModal] = useState(true);
+
   const more = () => {
     setPcs(pcs + 1);
     setCedis(cedis + 20);
@@ -16,18 +23,28 @@ function MovieModal(props) {
 
   const Buy = (e) => {
     e.preventDefault();
-    console.log(pcs, cedis, mall);
+    //Save info into session storage
+    sessionStorage.setItem(props.title, JSON.stringify({ pcs, cedis, mall, payment }));
+
+    if (payment === "Credit Card") {
+      setBuyModal(false);
+      setCreditCard(true);
+    } else {
+      setBuyModal(false);
+
+      setMomo(true);
+    }
   };
   return (
     <Modal {...props} aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header className="bg-dark text-center" closeButton>
         <Modal.Title id="contained-modal-title-vcenter">{props.title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="bg-dark text-center">
+      <Modal.Body className={buyModal ? "bg-dark text-center" : "d-none"}>
         <h3 className="text-light">Select Location</h3>
         <br />
         <Form className="align-items-center">
-          <fieldset>
+          <fieldset className="offset-3">
             <Form.Row>
               <Col xs="auto">
                 <Form.Check
@@ -57,25 +74,58 @@ function MovieModal(props) {
           </fieldset>
           <br />
           <h3 className="text-light">Number of Tickets</h3>
-          <Form.Row>
-            <Col xs="auto">
-              <Button onClick={less}>-</Button>
-            </Col>
-            <Col xs="auto">
-              <Form.Control className="form-number text-center" type="number" value={pcs} disabled />
-            </Col>
-            <Col xs="auto">
-              <Button onClick={more}>+</Button>
-            </Col>
-          </Form.Row>
+          <div className="offset-4">
+            <Form.Row>
+              <Col xs="auto">
+                <Button onClick={less}>-</Button>
+              </Col>
+              <Col xs="auto">
+                <Form.Control className="form-number text-center" type="number" value={pcs} disabled />
+              </Col>
+              <Col xs="auto">
+                <Button onClick={more}>+</Button>
+              </Col>
+            </Form.Row>
+          </div>
           <br />
           <h3 className="text-light">Ticket Price</h3>
           <h1>{cedis}.00 Ghc</h1>
+
+          <h3>Select Payment</h3>
+          <fieldset className="offset-3 pb-5">
+            <Form.Row>
+              <Col xs="auto">
+                <Form.Check
+                  type="radio"
+                  onChange={(e) => {
+                    setPayment(e.target.value);
+                  }}
+                  value="Credit Card"
+                  label="Credit Card"
+                  name="formHorizontal"
+                  id="formHorizontal"
+                />
+              </Col>
+              <Col xs="auto">
+                <Form.Check
+                  type="radio"
+                  onChange={(e) => {
+                    setPayment(e.target.value);
+                  }}
+                  value="Mobile Money"
+                  label="Mobile Money"
+                  name="formHorizontal"
+                  id="formHorizontal"
+                />
+              </Col>
+            </Form.Row>
+          </fieldset>
           <Button type="submit" onClick={Buy}>
             Confirm Ticket
           </Button>
         </Form>
       </Modal.Body>
+      {momo && <MomoModal />} {creditCard && <CreditCard />}
     </Modal>
   );
 }
