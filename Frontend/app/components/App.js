@@ -25,6 +25,7 @@ const App = () => {
     LoggedIn: false,
     user: {},
     Ticket: null,
+    Navigate: false,
   };
 
   const reducer = (state, action) => {
@@ -41,14 +42,14 @@ const App = () => {
           user: null,
         };
 
-      // case "MOVIE":
-      //   return {
-      //     Movie: action.payload,
-      //   };
-
       case "TICKET":
         return {
           Ticket: action.payload,
+        };
+
+      case "Navigate":
+        return {
+          Navigate: action.payload,
         };
     }
   };
