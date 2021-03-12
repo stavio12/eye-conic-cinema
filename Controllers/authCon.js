@@ -41,7 +41,6 @@ exports.bodyGuard = catchAsync(async (req, res, next) => {
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-
   if (!token) {
     return res.send({ status: 401, data: "Log In to access this page!" });
   }

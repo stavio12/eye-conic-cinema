@@ -23,11 +23,28 @@ let userSchema = new mongoose.Schema({
   },
   orders: [
     {
-      id: String,
+      movieId: String,
       movie: String,
       runtime: String,
+      pcs: Number,
       view: String,
       payment: String,
+      mall: String,
+      amount: String,
+      phone: Number,
+    },
+  ],
+  GuestOrder: [
+    {
+      movieId: String,
+      movie: String,
+      runtime: String,
+      pcs: Number,
+      view: String,
+      payment: String,
+      mall: String,
+      amount: String,
+      phone: Number,
     },
   ],
   watchList: [

@@ -38,6 +38,9 @@ function MoviePage() {
 
   const buyTicket = () => {
     setModalShow(true);
+    //Save info into session storage
+    console.log(movies);
+    sessionStorage.setItem(id, JSON.stringify({ id, movies, runtime }));
   };
 
   return (
@@ -78,7 +81,7 @@ function MoviePage() {
                 BUY TICKETS
               </Button>
             </Col>
-            <MovieModal show={modalShow} title={movies.title} onHide={() => setModalShow(false)} />
+            <MovieModal show={modalShow} id={id} title={movies.title} hideModal={setModalShow} onHide={() => setModalShow(false)} />
             {/* {appState.LoggedIn ? : <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />} */}
           </Row>
         )}

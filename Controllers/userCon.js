@@ -2,7 +2,9 @@
 
 // let myuuid = uuidv4();
 
-const { filter } = require("async");
+// const { filter } = require("async");
+const catchAsync = require("../utils/catchAsync");
+
 const User = require("../models/userdb");
 
 const filterObj = (obj, ...allowedFields) => {
@@ -15,13 +17,13 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-exports.getUser = async (req, res) => {
+exports.getUser = catchAsync(async (req, res) => {
   res.status(200).json({
     status: "success",
   });
-};
+});
 
-exports.updateMe = async (req, res, next) => {
+exports.updateMe = catchAsync(async (req, res, next) => {
   // Create error if user tries to change password
   if (req.body.password) {
     return res.send({ status: 400, data: "Passwords can not be change here. Please use /updateMyPassword" });
@@ -42,9 +44,40 @@ exports.updateMe = async (req, res, next) => {
   });
 
   console.log("Data updated sucessfully");
-};
+});
 
-exports.activeOrders = async (req, res, next) => {
+exports.activeOrders = catchAsync(async (req, res, next) => {
+  //find user i)d
+  const data = req.body;
+  console.log(data.movie);
+  const user = await User.findByIdAndUpdate(data.id, { $push: { orders: data.movie } });
+  console.log(user);
+  // findUser.order.insertOne(movieDetails);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      user: user,
+    },
+  });
+});
+
+exports.guestOrders = catchAsync(async (req, res, next) => {
+  //find user i)d
+  const data = req.body;
+  const user = await User.create({ $push: { GuestOrder: data.movie } });
+  console.log(user);
+  // findUser.order.insertOne(movieDetails);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      user: user,
+    },
+  });
+});
+
+exports.watchList = catchAsync(async (req, res, next) => {
   //find user id
   const movieDetails = req.body;
   const user = await User.findByIdAndUpdate(req.user.id, { $push: movieDetails });
@@ -56,23 +89,9 @@ exports.activeOrders = async (req, res, next) => {
       user: user,
     },
   });
-};
+});
 
-exports.watchList = async (req, res, next) => {
-  //find user id
-  const movieDetails = req.body;
-  const user = await User.findByIdAndUpdate(req.user.id, { $push: movieDetails });
-  // findUser.order.insertOne(movieDetails);
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      user: user,
-    },
-  });
-};
-
-exports.DeleteMovie = async (req, res, next) => {
+exports.DeleteMovie = catchAsync(async (req, res, next) => {
   //find movie id
   const movieQuery = { _id: req.params.id };
 
@@ -88,4 +107,4 @@ exports.DeleteMovie = async (req, res, next) => {
       },
     });
   });
-};
+});
