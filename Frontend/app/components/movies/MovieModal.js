@@ -125,7 +125,7 @@ function MovieModal(props) {
           </Button>
         </Form>
       </Modal.Body>
-      {momo && <MomoModal id={props.id} title={props.title} />} {creditCard && <CreditCard title={props.title} />}
+      {momo && <MomoModal id={props.id} title={props.title} />} {creditCard && <CreditCard id={props.id} title={props.title} />}
     </Modal>
   );
 }

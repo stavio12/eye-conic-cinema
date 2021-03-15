@@ -11,6 +11,6 @@ router.post("/login", authCon.login);
 
 router.post("/forgotPassword", authCon.forgotPassword);
 router.patch("/resetPassword/:token", authCon.resetPassword);
-router.post("/active-orders", userCon.activeOrders);
+router.post("/active-orders", authCon.bodyGuard, userCon.activeOrders);
 router.post("/active-orders/guest", userCon.guestOrders);
 module.exports = router;

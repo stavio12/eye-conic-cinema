@@ -12,7 +12,7 @@ function MomoModal(props) {
   const [movie, setMovie] = useState("");
   const [number, setNumber] = useState("");
   const [network, setNetwork] = useState("");
-  const [Url, setURL] = useState("http://localhost:4000/active-orders/guest");
+  const [Url, setURL] = useState("https://eyeconic-cinema.herokuapp.com/active-orders/guest");
   const [trigger, setTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
   const appState = useContext(StateContext);
@@ -20,7 +20,7 @@ function MomoModal(props) {
   useEffect(() => {
     setMovie(JSON.parse(sessionStorage.getItem(props.title)));
     setDetails(JSON.parse(sessionStorage.getItem(props.id)));
-    appState.user._id ? setURL("http://localhost:4000/active-orders") : "";
+    appState.user._id ? setURL("https://eyeconic-cinema.herokuapp.com/active-orders") : "";
 
     const networkSwitch = () => {
       if (number.startsWith("057" || "026" || "056" || "027")) {
@@ -66,6 +66,7 @@ function MomoModal(props) {
               amount: movie.amount,
               mall: movie.mall,
               view: "active",
+              phone: number,
             },
           ],
         },

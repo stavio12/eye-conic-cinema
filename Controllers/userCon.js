@@ -6,6 +6,7 @@
 const catchAsync = require("../utils/catchAsync");
 
 const User = require("../models/userdb");
+const guestUser = require("../models/guestdb");
 
 const filterObj = (obj, ...allowedFields) => {
   //Loop through the objects
@@ -49,7 +50,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 exports.activeOrders = catchAsync(async (req, res, next) => {
   //find user i)d
   const data = req.body;
-  console.log(data.movie);
   const user = await User.findByIdAndUpdate(data.id, { $push: { orders: data.movie } });
   console.log(user);
   // findUser.order.insertOne(movieDetails);
@@ -64,15 +64,14 @@ exports.activeOrders = catchAsync(async (req, res, next) => {
 
 exports.guestOrders = catchAsync(async (req, res, next) => {
   //find user i)d
-  const data = req.body;
-  const user = await User.create({ $push: { GuestOrder: data.movie } });
-  console.log(user);
+  console.log(req.body.movie);
+  const guest = await guestUser.create({ GuestOrder: req.body.movie });
   // findUser.order.insertOne(movieDetails);
 
   res.status(200).json({
     status: "success",
     data: {
-      user: user,
+      guest: guest,
     },
   });
 });
