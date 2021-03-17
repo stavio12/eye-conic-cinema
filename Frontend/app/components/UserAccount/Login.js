@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Button, Form, Container, Col, Row, Spinner } from "react-bootstrap";
-import { Link, Redirect, useParams } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Avartar from "./Avartar";
 
 import DispatchContext from "../DispatchContext";
@@ -28,6 +28,7 @@ function Login() {
       const res = await axios({
         method: "post",
         url: "http://localhost:4000/login",
+        // http://localhost:3000/login
         withCredentials: true,
         credentials: "include",
         data: {

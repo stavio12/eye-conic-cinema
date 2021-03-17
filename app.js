@@ -13,7 +13,7 @@ const app = express();
 dotenv.config({ path: "./config.env" });
 
 const AppError = require("./utils/appError");
-const globalError = require("./controllers/errorController");
+const globalError = require("./Controllers/errorController");
 const userRouter = require("./routes/userRouter");
 
 //middle wares
