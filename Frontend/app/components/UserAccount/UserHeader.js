@@ -12,7 +12,7 @@ function UserHeader() {
 
   return (
     <>
-      <Navbar collapseOnSelect expand="lg">
+      <Navbar collapseOnSelect expand="lg" variant="dark">
         <Navbar.Brand as={Link} to="/" className="d-none d-sm-block">
           <Image id="logo" src={logo} />
         </Navbar.Brand>
