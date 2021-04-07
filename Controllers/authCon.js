@@ -3,12 +3,12 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userdb");
 const catchAsync = require("../utils/catchAsync");
-const AppError = require("./../utils/appError");
+const AppError = require("../utils/appError");
 const sendEmail = require("../utils/email");
 
 //control token ids
 const signToken = (id) => {
-  return jwt.sign({ id: id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 };
 
 const createSendToken = (user, statusCode, res) => {
@@ -36,6 +36,7 @@ const createSendToken = (user, statusCode, res) => {
 exports.bodyGuard = catchAsync(async (req, res, next) => {
   // Getting token and check if it exists
   let token;
+
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     token = req.headers.authorization.split(" ")[1];
   } else if (req.cookies.jwt) {
@@ -88,7 +89,7 @@ exports.signup = catchAsync(async (req, res, next) => {
       message: message,
     });
 
-    createSendToken(newUser, 201, res);
+    createSendToken(newUser, 200, res);
   } catch (error) {
     console.log(error);
 
@@ -97,7 +98,6 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 exports.login = catchAsync(async (req, res, next) => {
-  console.log(req.body);
   const { email, password } = req.body;
 
   // verify if password and email was is available
@@ -119,8 +119,6 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
-  console.log(req.body.email);
-
   if (!req.body.email) {
     return next(new AppError("Please Provide an email!", 404));
   }

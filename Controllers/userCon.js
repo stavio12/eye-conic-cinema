@@ -1,8 +1,3 @@
-// import { v4 as uuidv4 } from "uuid";
-
-// let myuuid = uuidv4();
-
-// const { filter } = require("async");
 const catchAsync = require("../utils/catchAsync");
 
 const User = require("../models/userdb");
@@ -19,8 +14,11 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 exports.getUser = catchAsync(async (req, res) => {
+  const user = await User.findById(req.params.id);
   res.status(200).json({
-    status: "success",
+    message: "success",
+    status: 200,
+    user,
   });
 });
 
@@ -48,7 +46,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 });
 
 exports.activeOrders = catchAsync(async (req, res, next) => {
-  //find user i)d
   const data = req.body;
   const user = await User.findByIdAndUpdate(data.id, { $push: { orders: data.movie } });
   console.log(user);
@@ -63,8 +60,6 @@ exports.activeOrders = catchAsync(async (req, res, next) => {
 });
 
 exports.guestOrders = catchAsync(async (req, res, next) => {
-  //find user i)d
-  console.log(req.body.movie);
   const guest = await guestUser.create({ GuestOrder: req.body.movie });
   // findUser.order.insertOne(movieDetails);
 

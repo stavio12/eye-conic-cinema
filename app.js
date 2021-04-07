@@ -8,12 +8,13 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 dotenv.config({ path: "./config.env" });
 
 const AppError = require("./utils/appError");
-const globalError = require("./Controllers/errorController");
+const GlobalError = require("./Controllers/errorController");
 const userRouter = require("./routes/userRouter");
 
 //middle wares
@@ -27,10 +28,10 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   message: "Too many request from this IP, Please try again in an hour ",
 });
-// app.use("/:name", limiter);
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: "10kb" }));
+app.use(bodyParser.json({ limit: "10kb" }));
+app.use(cookieParser());
 
 //data sanization against nosql query injection
 app.use(mongoSanitize());
@@ -68,7 +69,7 @@ app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
-app.use(globalError);
+app.use(GlobalError);
 
 const port = process.env.PORT;
 app.listen(port, () => {
