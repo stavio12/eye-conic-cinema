@@ -6,8 +6,8 @@ import CreditCard from "./CreditCard";
 function MovieModal(props) {
   const [pcs, setPcs] = useState(1);
   const [cedis, setCedis] = useState(20);
-  const [mall, setMall] = useState();
-  const [payment, setPayment] = useState();
+  const [mall, setMall] = useState("");
+  const [payment, setPayment] = useState("");
   const [momo, setMomo] = useState(false);
   const [creditCard, setCreditCard] = useState(false);
   const [buyModal, setBuyModal] = useState(true);
@@ -24,16 +24,20 @@ function MovieModal(props) {
   const Buy = (e) => {
     e.preventDefault();
     //Save info into session storage
-    sessionStorage.setItem(props.title, JSON.stringify({ pcs, cedis, mall, payment }));
+if(mall ||payment !==""){
+  sessionStorage.setItem(props.title, JSON.stringify({ pcs, cedis, mall, payment }));
 
     if (payment === "Credit Card") {
       setBuyModal(false);
       setCreditCard(true);
     } else {
       setBuyModal(false);
-
       setMomo(true);
     }
+
+
+}   
+  
   };
   return (
     <Modal {...props} aria-labelledby="contained-modal-title-vcenter" centered>
@@ -54,8 +58,9 @@ function MovieModal(props) {
                   }}
                   value="Accra Mall"
                   label="Accra Mall"
-                  name="formHorizontalRadios"
+                  name="mall"
                   id="formHorizontalRadios1"
+                  required
                 />
               </Col>
               <Col xs="auto">
@@ -66,7 +71,7 @@ function MovieModal(props) {
                   }}
                   value="West Hills Mall"
                   label="West Hills Mall"
-                  name="formHorizontalRadios"
+                  name="mall"
                   id="formHorizontalRadios2"
                 />
               </Col>
@@ -102,8 +107,9 @@ function MovieModal(props) {
                   }}
                   value="Credit Card"
                   label="Credit Card"
-                  name="formHorizontal"
+                  name="payment"
                   id="formHorizontal"
+                  required
                 />
               </Col>
               <Col xs="auto">
@@ -114,7 +120,7 @@ function MovieModal(props) {
                   }}
                   value="Mobile Money"
                   label="Mobile Money"
-                  name="formHorizontal"
+                  name="payment"
                   id="formHorizontal"
                 />
               </Col>

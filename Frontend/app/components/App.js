@@ -58,9 +58,8 @@ const App = () => {
 
   useEffect(() => {
     document.title = "Eyeconic || EXPERINCE MOVIES";
-  }, [DocumentTitle, state.LoggedIn]);
+  }, [DocumentTitle, state.LoggedIn, state.user]);
 
-  console.log(state.Ticket);
   const bodyGuard = (Component) => {
     return state.LoggedIn ? <Component /> : <Redirect to="/login" />;
   };

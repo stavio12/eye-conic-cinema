@@ -4,7 +4,7 @@ import { Table, Form, Container, Col, Row, Nav, Navbar } from "react-bootstrap";
 function AllOrders() {
   return (
     <>
-      <Table striped bordered hover>
+      <Table striped bordered hover className="text-white">
         <thead>
           <tr>
             <th>#</th>

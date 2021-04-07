@@ -27,7 +27,7 @@ function Login() {
       //Sending details to backend server......
       const res = await axios({
         method: "post",
-        url: "http://localhost:4000/login",
+        url: "https://eyeconic-cinema.herokuapp.com/login",
         // http://localhost:3000/login
         withCredentials: true,
         credentials: "include",
@@ -41,14 +41,14 @@ function Login() {
         console.log(response.data);
         if (response.status === 200) {
           appDispatch({ type: "LOGIN", payload: response.data.user, LoggedIn: true });
-          setUser(response.data.user);
         }
       });
     } catch (err) {
       setIsLoading(false);
+      console.log(err.response);
       if (err.toString() === "Error: Network Error") {
         //Log network erorr here
-        showAlert("danger", err.toString());
+        showAlert("danger", err.message);
       } else if (err.response !== undefined) {
         showAlert("danger", err.response.data.message);
       }

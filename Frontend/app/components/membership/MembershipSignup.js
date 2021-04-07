@@ -36,21 +36,21 @@ function MembershipSignup() {
           membershipType: membershipType,
         },
       }).then((response) => {
+        console.log(response);
         setIsLoading(false);
-        // If the user account is created redirect the user to Login page
-        if (response.data.status === "success") {
+        //If the user account is created redirect the user to Login page
+        if (response.data.status === 201 || 200) {
           return (window.location = "/login");
         }
-        // If there is any registration error redirect the user to signup page
 
-        showAlert("danger", response.data.data);
+        console.log("In here");
       });
-      console.log("In here");
-
-      //Clear up form after submitting
+      // Clear up form after submitting
       document.getElementById("form").reset();
     } catch (err) {
       setIsLoading(false);
+      console.log(err.response);
+      console.log(err);
       if (err.toString() === "Error: Network Error") {
         //Log network erorr here
         showAlert("danger", err.toString());
@@ -58,7 +58,7 @@ function MembershipSignup() {
 
       //Log out any other erorr here
 
-      showAlert("danger", err.toString());
+      showAlert("danger", err.response.data.message);
     }
   };
 

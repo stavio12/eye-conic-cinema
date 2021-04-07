@@ -11,7 +11,7 @@ function VisaModal(props) {
   const [cvv, setCvv] = useState("");
   const [expiry, setExpiry] = useState("");
   const [trigger, setTrigger] = useState(false);
-  const [URL, setURL] = useState("https://eyeconic-cinema.herokuapp.com/active-orders/guest");
+  const [Url, setURL] = useState("");
 
   const [loading, setLoading] = useState(false);
   const appState = useContext(StateContext);
@@ -19,7 +19,11 @@ function VisaModal(props) {
   useEffect(() => {
     setMovie(JSON.parse(sessionStorage.getItem(props.title)));
     setDetails(JSON.parse(sessionStorage.getItem(props.id)));
-    appState.user._id ? setURL("https://eyeconic-cinema.herokuapp.com/active-orders") : "";
+    if (appState.user._id === undefined) {
+      setURL("https://eyeconic-cinema.herokuapp.com/active-orders/guest");
+    } else {
+      setURL("https://eyeconic-cinema.herokuapp.com/active-orders");
+    }
   }, [appState.user]);
 
   const Buy = async (e) => {
@@ -64,6 +68,7 @@ function VisaModal(props) {
     } catch (error) {
       console.log(error);
       setLoading(false);
+      showAlert("danger", error.response.data.message);
     }
   };
   return (

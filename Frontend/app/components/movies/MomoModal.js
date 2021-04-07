@@ -6,13 +6,14 @@ import mtn from "../../src/mtn.png";
 import ThankyouModal from "./ThankyouModal";
 import axios from "axios";
 import StateContext from "../StateContext";
+import { showAlert } from "../Flashmsg";
 
 function MomoModal(props) {
   const [details, setDetails] = useState("");
   const [movie, setMovie] = useState("");
   const [number, setNumber] = useState("");
   const [network, setNetwork] = useState("");
-  const [Url, setURL] = useState("https://eyeconic-cinema.herokuapp.com/active-orders/guest");
+  const [Url, setURL] = useState("");
   const [trigger, setTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
   const appState = useContext(StateContext);
@@ -20,7 +21,12 @@ function MomoModal(props) {
   useEffect(() => {
     setMovie(JSON.parse(sessionStorage.getItem(props.title)));
     setDetails(JSON.parse(sessionStorage.getItem(props.id)));
-    appState.user._id ? setURL("https://eyeconic-cinema.herokuapp.com/active-orders") : "";
+
+    if (appState.user._id === undefined) {
+      setURL("https://eyeconic-cinema.herokuapp.com/active-orders/guest");
+    } else {
+      setURL("https://eyeconic-cinema.herokuapp.com/active-orders");
+    }
 
     const networkSwitch = () => {
       if (number.startsWith("057" || "026" || "056" || "027")) {
@@ -33,10 +39,10 @@ function MomoModal(props) {
     };
 
     return networkSwitch();
-  }, [number, appState.user]);
+  }, [number, appState.user, Url]);
   const Buy = async (e) => {
     e.preventDefault();
-
+    console.log(appState.user._id);
     if (!(number.length === 10)) {
       document.querySelector(".phone").style.borderColor = "red";
     } else if (!network == "") {
@@ -76,14 +82,10 @@ function MomoModal(props) {
       setLoading(false);
       setTrigger(true);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message);
       setLoading(false);
+      showAlert("danger", error.response.data.message);
     }
-
-    // setTimeout(function () {
-    //   setTrigger(false);
-    // }, 10000);
-    // return (window.location = "/movies");
   };
 
   return (
