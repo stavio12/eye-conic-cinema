@@ -30,7 +30,7 @@ let userSchema = new mongoose.Schema({
       view: String,
       payment: String,
       mall: String,
-      amount: String,
+      amount: Number,
       phone: Number,
     },
   ],

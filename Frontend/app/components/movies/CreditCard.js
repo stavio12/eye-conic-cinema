@@ -3,6 +3,7 @@ import { Button, Col, Modal, Form, Row, Spinner } from "react-bootstrap";
 import axios from "axios";
 import ThankyouModal from "./ThankyouModal";
 import StateContext from "../StateContext";
+import { showAlert } from "../Flashmsg";
 
 function VisaModal(props) {
   const [details, setDetails] = useState("");
@@ -28,6 +29,8 @@ function VisaModal(props) {
 
   const Buy = async (e) => {
     e.preventDefault();
+    console.log(movie.cedis);
+
     if (!name.length === "") {
       document.querySelector(".phone").style.borderColor = "red";
     } else if (!cvv.length === 3) {
@@ -38,11 +41,11 @@ function VisaModal(props) {
     setLoading(true);
     console.log("This Called");
     try {
-      console.log({ movieId: details.id, movie: details.movies.title, runtime: details.runtime, pcs: movie.pcs, payment: movie.payment, amount: movie.amount, mall: movie.mall, view: "active" });
+      console.log({ movieId: details.id, movie: details.movies.title, runtime: details.runtime, pcs: movie.pcs, payment: movie.payment, amount: movie.cedis, mall: movie.mall, view: "active" });
 
       const res = await axios({
         method: "post",
-        url: URL,
+        url: Url,
         withCredentials: true,
         credentials: "include",
         data: {
@@ -54,7 +57,7 @@ function VisaModal(props) {
               runtime: details.runtime,
               pcs: movie.pcs,
               payment: movie.payment,
-              amount: movie.amount,
+              amount: movie.cedis,
               mall: movie.mall,
               view: "active",
             },
@@ -68,6 +71,7 @@ function VisaModal(props) {
     } catch (error) {
       console.log(error);
       setLoading(false);
+      console.log(error.response);
       showAlert("danger", error.response.data.message);
     }
   };

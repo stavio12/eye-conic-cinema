@@ -69,7 +69,7 @@ function MomoModal(props) {
               runtime: details.runtime,
               pcs: movie.pcs,
               payment: movie.payment,
-              amount: movie.amount,
+              amount: movie.cedis,
               mall: movie.mall,
               view: "active",
               phone: number,
