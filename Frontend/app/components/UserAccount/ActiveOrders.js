@@ -18,7 +18,8 @@ function ActiveOrder() {
           // http://localhost:3000/login
           withCredentials: true,
           credentials: "include",
-        }).then(async (response) => {
+        }).then( (response) => {
+          console.log(response)
           //If sending details to server turn on spinners and disable forms to readonly
           if (response.data.status === 200) {
             setOrder(response.data.user.orders);
